@@ -1,0 +1,24 @@
+package com.github.queebskeleton.hardwarecommerce.service.impl;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+import com.github.queebskeleton.hardwarecommerce.entity.Category;
+import com.github.queebskeleton.hardwarecommerce.repository.CategoryJpaRepository;
+import com.github.queebskeleton.hardwarecommerce.service.CategoryService;
+
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
+@Service
+public class CategoryServiceImpl implements CategoryService {
+	
+	private final CategoryJpaRepository categoryJpaRepository;
+	
+	@Override
+	public Page<Category> getCategoryPage(Pageable pageable) {
+		return categoryJpaRepository.findAll(pageable);
+	}
+
+}
