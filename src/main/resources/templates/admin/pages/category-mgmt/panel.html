@@ -55,7 +55,7 @@
 
                 <div class="card-tools">
                   <div class="input-group input-group-sm" style="width: 150px;">
-                    <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
+                    <input type="text" name="categoryTableSearch" class="form-control float-right" placeholder="Search">
 
                     <div class="input-group-append">
                       <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
@@ -114,7 +114,7 @@
 
 <!-- Category Table Script -->
 <script>
-	var categoryTable = function(page, size, sortCol, sortDir) {
+	var categoryTable = function(page, size, sortCol, sortDir, search) {
 		var data = {};
 		
 		if(page != null)
@@ -127,6 +127,9 @@
 			data.sortCol = sortCol;
 			data.sortDir = sortDir;
 		}
+		
+		if(search != null)
+			data.search = search;
 		
 		$.ajax({
 			type: "GET",
@@ -142,6 +145,20 @@
 	}
 	
 	categoryTable();
+</script>
+
+<!-- Category Table Search -->
+<script>
+	var categoryTableSearchTimeout;
+	
+	$("input[name='categoryTableSearch']").keyup(function() {
+		clearTimeout(categoryTableSearchTimeout);
+		categoryTableSearchTimeout = setTimeout(function() {
+			var search = $("input[name='categoryTableSearch']").val();
+			
+			categoryTable(null, null, null, null, search != "" ? search : null);
+		}, 300);
+	});
 </script>
 
 </body>

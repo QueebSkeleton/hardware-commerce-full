@@ -7,6 +7,6 @@ import com.github.queebskeleton.hardwarecommerce.entity.Category;
 
 public interface CategoryService {
 	
-	Page<Category> getCategoryPage(Pageable pageable);
+	Page<Category> getCategoryPage(Pageable pageable, String search);
 
 }

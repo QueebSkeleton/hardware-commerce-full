@@ -17,8 +17,15 @@ public class CategoryServiceImpl implements CategoryService {
 	private final CategoryJpaRepository categoryJpaRepository;
 	
 	@Override
-	public Page<Category> getCategoryPage(Pageable pageable) {
-		return categoryJpaRepository.findAll(pageable);
+	public Page<Category> getCategoryPage(Pageable pageable, String search) {
+		
+		if(search == null)
+			return categoryJpaRepository.findAll(pageable);
+		
+		return categoryJpaRepository.
+				findAllByNameContainsIgnoreCaseOrDescriptionContainsIgnoreCase(
+						search, search, pageable);
+		
 	}
 
 }

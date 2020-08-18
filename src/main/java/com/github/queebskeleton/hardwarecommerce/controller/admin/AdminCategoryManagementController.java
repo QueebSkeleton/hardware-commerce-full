@@ -18,8 +18,8 @@ public class AdminCategoryManagementController {
 	private final CategoryService categoryService;
 	
 	@GetMapping("/table")
-	public String table(Pageable pageable, Model model) {
-		model.addAttribute("categoryPage", categoryService.getCategoryPage(pageable));
+	public String table(Pageable pageable, String search, Model model) {
+		model.addAttribute("categoryPage", categoryService.getCategoryPage(pageable, search));
 		
 		return "admin/pages/category-mgmt/table";
 	}
