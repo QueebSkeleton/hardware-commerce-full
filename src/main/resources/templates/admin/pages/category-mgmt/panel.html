@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://thymeleaf.org">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+  <title>H-Commerce | Manage Categories</title>
+
+  <th:block th:replace="~{admin/fragments/common-links :: cssLinks}"></th:block>
+  
+</head>
+
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+  
+  <!--/* Insert topbar fragment */-->
+  <nav th:replace="~{admin/fragments/navs :: topbar}"></nav>
+
+  <!--/* Insert sidebar fragment */-->
+  <aside th:replace="~{admin/fragments/navs :: sidebar}"></aside>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0 text-dark">Manage Categories</h1>
+          </div><!-- /.col -->
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a th:href="@{/admin/dashboard}">Dashboard</a></li>
+              <li class="breadcrumb-item active">Manage Categories</li>
+            </ol>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <div class="content">
+      <div class="container-fluid">
+      
+        <div class="row">
+          
+          <div class="col-12">
+            
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Categories Table</h3>
+
+                <div class="card-tools">
+                  <div class="input-group input-group-sm" style="width: 150px;">
+                    <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
+
+                    <div class="input-group-append">
+                      <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body table-responsive p-0">
+                <table class="table table-hover text-nowrap">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Description</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Category1</td>
+                      <td>Description for Category1.</td>
+                      <td>
+                        <div class="btn-group">
+                          <button type="button" class="btn btn-sm btn-primary">
+                            <i class="fas fa-edit"></i> Edit
+                          </button>
+                          <button type="button" class="btn btn-sm btn-danger">
+                            <i class="fas fa-trash"></i> Delete
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Category2</td>
+                      <td>Description for Category2.</td>
+                      <td>
+                        <div class="btn-group">
+                          <button type="button" class="btn btn-sm btn-primary">
+                            <i class="fas fa-edit"></i> Edit
+                          </button>
+                          <button type="button" class="btn btn-sm btn-danger">
+                            <i class="fas fa-trash"></i> Delete
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.card-body -->
+              <div class="card-footer clearfix">
+                <ul class="pagination pagination-sm m-0 float-right">
+                  <li class="page-item"><a class="page-link" href="#">«</a></li>
+                  <li class="page-item"><a class="page-link" href="#">1</a></li>
+                  <li class="page-item"><a class="page-link" href="#">2</a></li>
+                  <li class="page-item"><a class="page-link" href="#">3</a></li>
+                  <li class="page-item"><a class="page-link" href="#">»</a></li>
+                </ul>
+              </div>
+            </div>
+            
+          </div>
+          
+        </div>
+        
+      </div>
+      <!-- /.container-fluid -->
+    </div>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+  <!-- Control Sidebar -->
+  <aside th:replace="~{admin/fragments/parts :: controlSidebar}"></aside>
+
+  <!-- Main Footer -->
+  <footer th:replace="~{admin/fragments/parts :: mainFooter}"></footer>
+  
+</div>
+<!-- ./wrapper -->
+
+<!-- REQUIRED SCRIPTS -->
+<th:block th:replace="~{admin/fragments/common-links :: jsLinks}"></th:block>
+
+</body>
+</html>
