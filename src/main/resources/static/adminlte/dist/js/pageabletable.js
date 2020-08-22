@@ -1,6 +1,6 @@
 class CardBasedPageableTable {
 		
-	constructor(tableCardId, tableResource) {
+	constructor(tableCardId, tableResource, initSortCol, initSortDir) {
 		// Container ID to place generated HTML content
 		this.tableCardId = tableCardId;
 		
@@ -10,10 +10,11 @@ class CardBasedPageableTable {
 		// Initialize pageable table to default values
 		this.page = 0;
 		this.size = 20;
+		$(this.tableCardId).find("select[name='pageSize']").val(this.size);
 		
 		// Sort initialized to first sortable field of table (with data-column-field attr)
-		var sortCol = $(tableCardId).find("table > thead > tr > th.sortable").data("column-field");
-		this.sort = sortCol + ",asc";
+		this.sortCol = initSortCol;
+		this.sortDir = initSortDir;
 		
 		this.initComponents();
 		
@@ -45,6 +46,24 @@ class CardBasedPageableTable {
     		table.page++;
     		table.render();
     	});
+    	
+    	// Sortable Column Click Event
+    	$(this.tableCardId).on("click", "th.sortable", function() {
+    		var clickedField = $(this).data("column-field");
+    		
+    		if(table.sortCol === clickedField)
+    			if(table.sortDir === "asc")
+    				table.sortDir = "desc";
+    			else
+    				table.sortDir = "asc";
+    		
+    		else {
+    			table.sortCol = clickedField;
+    			table.sortDir = "asc";
+    		}
+    		
+    		table.render();
+    	});
 		
 		// Bind keyup event to search input (with resetting 300ms delay for each key)
 		var searchTimeoutCall;
@@ -52,10 +71,12 @@ class CardBasedPageableTable {
 		$(this.tableCardId).on("keyup", "input[name='search']", function() {
 			clearTimeout(searchTimeoutCall);
 			
+			var inputSearch = this;
+			
 			searchTimeoutCall = setTimeout(function() {
-				search = $(this).val();
-				render();
-			});
+				table.search = $(inputSearch).val();
+				table.render();
+			}, 300);
 		});
 	}
 	
@@ -69,13 +90,12 @@ class CardBasedPageableTable {
 			data: {
 				"page": this.page,
 				"size": this.size,
-				"sort": this.sort,
+				"sort": this.sortCol + "," + this.sortDir,
 				"search": this.search
 			},
 			success: function(data) {
-				$(table.tableCardId + " > div.card-body").remove();
-				$(table.tableCardId + " > div.card-footer").remove();
-				$(table.tableCardId).append(data);
+				$(table.tableCardId + " > div.card-content").empty();
+				$(table.tableCardId + " > div.card-content").append(data);
 			}
 		})
 	}

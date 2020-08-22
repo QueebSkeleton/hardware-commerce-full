@@ -50,6 +50,7 @@
           <div class="col-12">
             
             <div class="card" id="category-table-card">
+            
               <div class="card-header">
                 <h3 class="card-title">Categories Table</h3>
             
@@ -61,12 +62,12 @@
                     <select name="pageSize" class="form-control float-right">
                       <option value="1">1</option>
                       <option value="10">10</option>
-                      <option value="20" selected>20</option>
+                      <option value="20">20</option>
                       <option value="50">50</option>
                     </select>
                   </div>
                   <div class="input-group input-group-sm" style="width: 150px;">
-                    <input type="text" name="search" class="form-control float-right" placeholder="Search">
+                    <input type="text" name="search" class="form-control float-right" placeholder="Search" th:value="${param.search}">
             
                     <div class="input-group-append">
                       <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
@@ -74,26 +75,10 @@
                   </div>
                 </div>
               </div>
-              <div class="card-body table-responsive p-0">
-                <table class="table table-hover text-nowrap" id="category-table">
-                  <thead>
-                    <tr>
-                      <th class="sortable" data-column-field="name">
-                        Name
-                      </th>
-                      <th class="sortable" data-column-field="description">
-                        Description
-                      </th>
-                      <th>Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td colspan="3" class="text-center">No data available in table</td>
-                    </tr>
-                  </tbody>
-                </table>
+              <div class="card-content">
+              
               </div>
+            
             </div>
             
           </div>
@@ -124,7 +109,7 @@
 
 <!-- Category Table Script -->
 <script>
-	new CardBasedPageableTable("#category-table-card", "categories/table");
+	new CardBasedPageableTable("#category-table-card", "categories/table", "name", "asc");
 </script>
 
 </body>
