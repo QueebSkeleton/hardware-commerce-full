@@ -2,11 +2,23 @@
 <th:block xmlns:th="https://thymeleaf.org">
 
   <div class="card-body table-responsive p-0">
-    <table class="table table-hover text-nowrap">
+    <table class="table table-hover text-nowrap" id="category-table">
       <thead>
         <tr>
-          <th>Name</th>
-          <th>Description</th>
+          <th class="sortable" data-column-field="name" th:data-sort-dir="${nameOrder?.getDirection()?.toString()?.toLowerCase()}">
+            Name
+            <span class="float-right">
+              <i class="fas fa-arrow-up fa-xs" th:classappend="${nameOrder == null or nameOrder?.isDescending()} ? ' text-muted'"></i>
+              <i class="fas fa-arrow-down fa-xs" th:classappend="${nameOrder == null or nameOrder?.isAscending()} ? ' text-muted'"></i>
+            </span>
+          </th>
+          <th class="sortable" data-column-field="description" th:data-sort-dir="${descriptionOrder?.getDirection()?.toString()?.toLowerCase()}">
+            Description
+            <span class="float-right">
+              <i class="fas fa-arrow-up fa-xs" th:classappend="${descriptionOrder == null or descriptionOrder?.isDescending()} ? ' text-muted'"></i>
+              <i class="fas fa-arrow-down fa-xs" th:classappend="${descriptionOrder == null or descriptionOrder?.isAscending()} ? ' text-muted'"></i>
+            </span>
+          </th>
           <th>Actions</th>
         </tr>
       </thead>
@@ -35,7 +47,7 @@
   </div>
   
   <div class="card-footer clearfix">
-    <b>Page [[${categoryPage.getPageable().getPageNumber() + 1}]] of [[${categoryPage.getTotalPages()}]]</b>
+    <b th:if="${not categoryPage.isEmpty()}">Page [[${categoryPage.getPageable().getPageNumber() + 1}]] of [[${categoryPage.getTotalPages()}]]</b>
     <ul class="pagination pagination-sm m-0 float-right">
       <li class="page-item" th:classappend="${categoryPage.isEmpty() or categoryPage.getPageable().getPageNumber() == 0} ? ' disabled'">
         <a class="page-link" href="#" id="prev-page">

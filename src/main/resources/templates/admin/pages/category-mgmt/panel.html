@@ -58,7 +58,7 @@
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="fas fa-eye"></i></span>
                     </div>
-                    <select name="categoryTablePageSize" class="form-control float-right">
+                    <select name="pageSize" class="form-control float-right">
                       <option value="1">1</option>
                       <option value="10">10</option>
                       <option value="20" selected>20</option>
@@ -66,13 +66,33 @@
                     </select>
                   </div>
                   <div class="input-group input-group-sm" style="width: 150px;">
-                    <input type="text" name="categoryTableSearch" class="form-control float-right" placeholder="Search">
+                    <input type="text" name="search" class="form-control float-right" placeholder="Search">
             
                     <div class="input-group-append">
                       <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
                     </div>
                   </div>
                 </div>
+              </div>
+              <div class="card-body table-responsive p-0">
+                <table class="table table-hover text-nowrap" id="category-table">
+                  <thead>
+                    <tr>
+                      <th class="sortable" data-column-field="name">
+                        Name
+                      </th>
+                      <th class="sortable" data-column-field="description">
+                        Description
+                      </th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td colspan="3" class="text-center">No data available in table</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
             
@@ -99,96 +119,12 @@
 <!-- REQUIRED SCRIPTS -->
 <th:block th:replace="~{admin/fragments/common-links :: jsLinks}"></th:block>
 
+<!-- Card Based Pageable Table Script -->
+<script th:src="@{/adminlte/dist/js/pageabletable.js}"></script>
+
 <!-- Category Table Script -->
 <script>
-	var currentPageNumber = 0;
-	
-	var categoryTable = function(page, size, sortCol, sortDir, search) {
-		var data = {};
-		
-		if(page != null)
-			data.page = page;
-		
-		if(size != null)
-			data.size = size;
-		
-		if(sortCol != null && sortDir != null) {
-			data.sortCol = sortCol;
-			data.sortDir = sortDir;
-		}
-		
-		if(search != null)
-			data.search = search;
-		
-		$.ajax({
-			type: "GET",
-			url: "categories/table",
-			data: data,
-			dataType: "html",
-			success: function(data) {
-				$("#category-table-card > .card-body").remove();
-				$("#category-table-card > .card-footer").remove();
-				$("#category-table-card").append(data);
-			}
-		});
-	}
-	
-	categoryTable();
-</script>
-
-<!-- Category Table Size -->
-<script>
-	$(document).on("change", "select[name='categoryTablePageSize']", function() {
-		var size = $("select[name='categoryTablePageSize']").val();
-		var search = $("input[name='categoryTableSearch']").val();
-		window.currentPageNumber = 0;
-		
-		categoryTable(window.currentPageNumber, size, null, null, search != "" ? search : null);
-	});
-</script>
-
-<!-- Category Table Search -->
-<script>
-	var categoryTableSearchTimeout;
-	
-	$(document).on("keyup", "input[name='categoryTableSearch']", function() {
-		clearTimeout(categoryTableSearchTimeout);
-		categoryTableSearchTimeout = setTimeout(function() {
-			var size = $("select[name='categoryTablePageSize']").val();
-			var search = $("input[name='categoryTableSearch']").val();
-			window.currentPageNumber = 0;
-			
-			categoryTable(window.currentPageNumber, size, null, null, search != "" ? search : null);
-		}, 300);
-	});
-</script>
-
-<!-- Category Table Page -->
-<script>
-	// Page Number Click Event
-	$(document).on("click", ".page-number", function() {
-		var size = $("select[name='categoryTablePageSize']").val();
-		var search = $("input[name='categoryTableSearch']").val();
-		window.currentPageNumber = parseInt($(this).data("page-number"));
-		
-		categoryTable(window.currentPageNumber, size, null, null, search != "" ? search : null);
-	});
-	
-	// Previous Page Click Event
-	$(document).on("click", "#prev-page", function() {
-		var size = $("select[name='categoryTablePageSize']").val();
-		var search = $("input[name='categoryTableSearch']").val();
-		
-		categoryTable(--window.currentPageNumber, size, null, null, search != "" ? search : null);
-	});
-	
-	// Next Page Click Event
-	$(document).on("click", "#next-page", function() {
-		var size = $("select[name='categoryTablePageSize']").val();
-		var search = $("input[name='categoryTableSearch']").val();
-		
-		categoryTable(++window.currentPageNumber, size, null, null, search != "" ? search : null);
-	});
+	new CardBasedPageableTable("#category-table-card", "categories/table");
 </script>
 
 </body>

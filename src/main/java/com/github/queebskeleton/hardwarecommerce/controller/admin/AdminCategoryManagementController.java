@@ -1,11 +1,13 @@
 package com.github.queebskeleton.hardwarecommerce.controller.admin;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.github.queebskeleton.hardwarecommerce.entity.Category;
 import com.github.queebskeleton.hardwarecommerce.service.CategoryService;
 
 import lombok.RequiredArgsConstructor;
@@ -19,7 +21,11 @@ public class AdminCategoryManagementController {
 	
 	@GetMapping("/table")
 	public String table(Pageable pageable, String search, Model model) {
-		model.addAttribute("categoryPage", categoryService.getCategoryPage(pageable, search));
+		Page<Category> categoryPage = categoryService.getCategoryPage(pageable, search);
+		
+		model.addAttribute("categoryPage", categoryPage);
+		model.addAttribute("nameOrder", categoryPage.getSort().getOrderFor("name"));
+		model.addAttribute("descriptionOrder", categoryPage.getSort().getOrderFor("description"));
 		
 		return "admin/pages/category-mgmt/table";
 	}
