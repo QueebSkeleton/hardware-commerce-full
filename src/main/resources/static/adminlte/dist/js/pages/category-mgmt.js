@@ -7,7 +7,7 @@
 */
 
 // Add Button Click
-$("a[data-target='#add-update-modal']").click(function() {
+$("a#btn-add").click(function() {
 	
 	// Request Server for empty Category Modal Form,
 	// then populate add-update-modal with response html data
@@ -17,9 +17,14 @@ $("a[data-target='#add-update-modal']").click(function() {
 		dataType: "html",
 		success: function(data) {
 			$("div#add-update-modal > div.modal-dialog").html(data);
+			$("div#add-update-modal").modal("show");
 		},
 		error: function(xhr, textStatus, errorThrown) {
-			console.log(xhr.status);
+			if(xhr.status === 400)
+				CrudNotifToast.fire({
+					icon: 'error',
+					title: 'An error has occured. Please refresh the page and try again.'
+				});
 		}
 	});
 	
@@ -88,7 +93,15 @@ $("div#delete-modal > div.modal-dialog > div.modal-content > div.modal-footer > 
 				icon: 'success',
 				title: 'Category was successfully removed.'
 			});
-    	}
+    	},
+		error: function(xhr, testStatus, errorThrown) {
+			$("div#delete-modal").modal("hide");
+			CrudNotifToast.fire({
+				icon: 'success',
+				title: 'An error has occured while trying to remove Category. ' 
+					+ 'If the problem persists after trying again, please contact support.'
+			});
+		}
     });
 });
 
@@ -108,6 +121,14 @@ $("div#add-update-modal").on("submit", "#add-update-form", function(e) {
 			CrudNotifToast.fire({
 				icon: 'success',
 				title: 'Category was successfully saved.'
+			});
+		},
+		error: function(xhr, testStatus, errorThrown) {
+			$("div#add-update-modal").modal("hide");
+			CrudNotifToast.fire({
+				icon: 'success',
+				title: 'An error has occured while trying to save Category.' 
+					+ 'If the problem persists after trying again, please contact support.'
 			});
 		}
 	});
