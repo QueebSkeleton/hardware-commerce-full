@@ -28,4 +28,17 @@ public class CategoryServiceImpl implements CategoryService {
 		
 	}
 
+	@Override
+	public Category getCategoryByNameOrNew(String name) {
+		if(name == null)
+			return new Category();
+		
+		return categoryJpaRepository.findById(name).get();
+	}
+
+	@Override
+	public void saveCategory(Category category) {
+		categoryJpaRepository.save(category);
+	}
+
 }

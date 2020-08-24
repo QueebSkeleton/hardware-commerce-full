@@ -2,10 +2,15 @@ package com.github.queebskeleton.hardwarecommerce.controller.admin;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.github.queebskeleton.hardwarecommerce.entity.Category;
 import com.github.queebskeleton.hardwarecommerce.service.CategoryService;
@@ -28,6 +33,21 @@ public class AdminCategoryManagementController {
 		model.addAttribute("descriptionOrder", categoryPage.getSort().getOrderFor("description"));
 		
 		return "admin/pages/category-mgmt/table";
+	}
+	
+	@GetMapping("/add-modal-form")
+	public String modalForm(@RequestParam(required = false) String name, Model model) {
+		model.addAttribute("category", new Category());
+		model.addAttribute("modalHeaderText", "Add Category");
+		
+		return "admin/pages/category-mgmt/add-update-modal";
+	}
+	
+	@PostMapping("/save")
+	public @ResponseBody ResponseEntity<Void> save(Category category) {
+		categoryService.saveCategory(category);
+		
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
 }

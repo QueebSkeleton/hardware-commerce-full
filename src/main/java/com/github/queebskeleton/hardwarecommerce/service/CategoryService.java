@@ -8,5 +8,7 @@ import com.github.queebskeleton.hardwarecommerce.entity.Category;
 public interface CategoryService {
 	
 	Page<Category> getCategoryPage(Pageable pageable, String search);
+	Category getCategoryByNameOrNew(String name);
+	void saveCategory(Category category);
 
 }
