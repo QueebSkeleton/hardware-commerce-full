@@ -30,7 +30,7 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Override
 	public Category getCategoryById(Long id) {
-		return categoryJpaRepository.findById(id).get();
+		return categoryJpaRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid id."));
 	}
 
 	@Override
