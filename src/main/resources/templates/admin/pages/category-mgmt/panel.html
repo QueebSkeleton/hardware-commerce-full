@@ -10,6 +10,9 @@
 
   <th:block th:replace="~{admin/fragments/common-links :: cssLinks}"></th:block>
   
+  <!-- SweetAlert2 CSS -->
+  <link rel="stylesheet" th:href="@{/adminlte/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css}">
+  
 </head>
 
 <body class="hold-transition sidebar-mini">
@@ -141,6 +144,10 @@
 <!-- REQUIRED SCRIPTS -->
 <th:block th:replace="~{admin/fragments/common-links :: jsLinks}"></th:block>
 
+<!-- SweetAlert2 JS -->
+<script th:src="@{/adminlte/plugins/sweetalert2/sweetalert2.min.js}"></script>
+<script th:src="@{/adminlte/dist/js/sweetalert2-genericcrud.js}"></script>
+
 <!-- Card Based Pageable Table Script -->
 <script th:src="@{/adminlte/dist/js/pageabletable.js}"></script>
 
@@ -203,6 +210,10 @@
         	success: function() {
 				$("div#delete-modal").modal("hide");
 				categoryTableCard.render();
+				CrudNotifToast.fire({
+					icon: 'success',
+					title: 'Category was successfully removed.'
+				});
         	}
         });
     });
@@ -220,6 +231,10 @@
 			success: function() {
 				$("div#add-update-modal").modal("hide");
 				categoryTableCard.render();
+				CrudNotifToast.fire({
+					icon: 'success',
+					title: 'Category was successfully saved.'
+				});
 			}
 		});
 	});
