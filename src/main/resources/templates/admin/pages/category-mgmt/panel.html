@@ -120,6 +120,7 @@
   var categoryTableCard = new CardBasedPageableTable("#category-table-card", "categories/table", "name", "asc");
 </script>
 
+<!-- Add Button Click -->
 <script>
 	$("a[data-target='#add-update-modal']").click(function() {
 		$.ajax({
@@ -129,7 +130,24 @@
 			success: function(data) {
 				$("div#add-update-modal > div.modal-dialog").html(data);
 			}
-		})
+		});
+	});
+</script>
+
+<!-- Update Button Click -->
+<script>
+	$("div#category-table-card > div.card-content").on("click", "button.btn-update", function() {
+		$.ajax({
+			type: "GET",
+			url: "categories/update-modal-form",
+			dataType: "html",
+			data: {
+				"id": $(this).data("id")
+			},
+			success: function(data) {
+				$("div#add-update-modal > div.modal-dialog").html(data);
+			}
+		});
 	});
 </script>
 

@@ -29,11 +29,8 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	@Override
-	public Category getCategoryByNameOrNew(String name) {
-		if(name == null)
-			return new Category();
-		
-		return categoryJpaRepository.findById(name).get();
+	public Category getCategoryById(Long id) {
+		return categoryJpaRepository.findById(id).get();
 	}
 
 	@Override

@@ -13,6 +13,8 @@
     
       <div class="modal-body">
       
+        <input type="hidden" name="id" th:value="*{id}">
+      
         <div class="form-group">
           <label for="name">Name</label>
           <input type="text" name="name" th:value="*{name}" required placeholder="Enter name here" class="form-control">
@@ -20,7 +22,7 @@
         
         <div class="form-group">
           <label for="description">Description</label>
-          <textarea name="description" th:value="*{description}" class="form-control" rows="3" placeholder="Enter description here"></textarea>
+          <textarea name="description" th:text="*{description}" class="form-control" rows="3" placeholder="Enter description here"></textarea>
         </div>
         
       </div>

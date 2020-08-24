@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.github.queebskeleton.hardwarecommerce.entity.Category;
 
 @Repository
-public interface CategoryJpaRepository extends JpaRepository<Category, String> {
+public interface CategoryJpaRepository extends JpaRepository<Category, Long> {
 	
 	Page<Category> findAllByNameContainsIgnoreCaseOrDescriptionContainsIgnoreCase(
 			String name,

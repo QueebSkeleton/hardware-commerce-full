@@ -29,10 +29,10 @@
             <td>[[*{description}]]</td>
             <td>
               <div class="btn-group">
-                <button type="button" class="btn btn-sm btn-primary" th:data-id="*{name}">
+                <button type="button" class="btn btn-sm btn-primary btn-update" th:data-id="*{id}" data-toggle="modal" data-target="#add-update-modal">
                   <i class="fas fa-edit"></i> Edit
                 </button>
-                <button type="button" class="btn btn-sm btn-danger" th:data-id="*{name}">
+                <button type="button" class="btn btn-sm btn-danger" th:data-id="*{id}">
                   <i class="fas fa-trash"></i> Delete
                 </button>
               </div>

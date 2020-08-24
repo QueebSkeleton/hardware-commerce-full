@@ -36,9 +36,17 @@ public class AdminCategoryManagementController {
 	}
 	
 	@GetMapping("/add-modal-form")
-	public String modalForm(@RequestParam(required = false) String name, Model model) {
+	public String addModalForm(Model model) {
 		model.addAttribute("category", new Category());
 		model.addAttribute("modalHeaderText", "Add Category");
+		
+		return "admin/pages/category-mgmt/add-update-modal";
+	}
+	
+	@GetMapping("/update-modal-form")
+	public String updateModalForm(@RequestParam Long id, Model model) {
+		model.addAttribute("category", categoryService.getCategoryById(id));
+		model.addAttribute("modalHeaderText", "Update Category");
 		
 		return "admin/pages/category-mgmt/add-update-modal";
 	}
