@@ -10,5 +10,6 @@ public interface CategoryService {
 	Page<Category> getCategoryPage(Pageable pageable, String search);
 	Category getCategoryById(Long id);
 	void saveCategory(Category category);
+	void deleteCategoryById(Long id);
 
 }

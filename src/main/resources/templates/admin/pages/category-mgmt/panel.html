@@ -109,6 +109,35 @@
   <!-- /.modal-dialog -->
 </div>
 
+<!-- Delete Modal -->
+<div class="modal fade" id="delete-modal" aria-modal="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">
+          <i class="fas fa-times-circle text-danger"></i>
+          Delete...
+        </h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p class="message">
+          You are about to delete Category named <b id="category-name"></b>.
+          Are you sure you want to proceed with this operation?
+        </p>
+      </div>
+      <div class="modal-footer justify-content-between">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">I change my mind...</button>
+        <a href="javascript:void(0)" class="btn btn-danger" id="confirm-delete-link">Delete</a>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
 <!-- REQUIRED SCRIPTS -->
 <th:block th:replace="~{admin/fragments/common-links :: jsLinks}"></th:block>
 
@@ -151,6 +180,35 @@
 	});
 </script>
 
+<!-- Delete Button Click -->
+<script>
+    $("div#category-table-card > div.card-content").on("click", "button.btn-delete", function() {
+        var modalContent = $("div#delete-modal > div.modal-dialog > div.modal-content")
+        $(modalContent).find("b#category-name").html($(this).data("name"));
+        var confirmDeleteLink = $(modalContent).find("div.modal-footer > a#confirm-delete-link");
+        
+        // Temporarily disable confirm delete link, for setting proper links
+        $(confirmDeleteLink).addClass("disabled");
+        $(confirmDeleteLink).attr("href", "categories/delete?id=" + $(this).data("id"));
+        // Re-enable
+        $(confirmDeleteLink).removeClass("disabled");
+    });
+    
+    $("div#delete-modal > div.modal-dialog > div.modal-content > div.modal-footer > a#confirm-delete-link").click(function(e) {
+        e.preventDefault();
+        
+        $.ajax({
+        	type: "DELETE",
+        	url: $(this).attr("href"),
+        	success: function() {
+				$("div#delete-modal").modal("hide");
+				categoryTableCard.render();
+        	}
+        });
+    });
+</script>
+
+<!-- Add / Update Form On Submit -->
 <script>
 	$("div#add-update-modal").on("submit", "#add-update-form", function(e) {
 		e.preventDefault();
