@@ -83,6 +83,9 @@ class CardBasedPageableTable {
 	render() {
 		var table = this;
 		
+		// Add Loading overlay
+		addLoadingOverlay(table.tableCardId);
+		
 		$.ajax({
 			type: "GET",
 			url: this.tableResource,
@@ -96,8 +99,9 @@ class CardBasedPageableTable {
 			success: function(data) {
 				$(table.tableCardId + " > div.card-content").empty();
 				$(table.tableCardId + " > div.card-content").append(data);
+				removeOverlay(table.tableCardId);
 			}
-		})
+		});
 	}
 	
 }

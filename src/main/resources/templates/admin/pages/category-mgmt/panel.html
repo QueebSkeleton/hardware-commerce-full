@@ -37,7 +37,7 @@
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a th:href="@{/admin/dashboard}">Dashboard</a></li>
               <li class="breadcrumb-item active">Manage Categories</li>
-              <li class="breadcrumb-item"><a href="javascript:void(0)" id="btn-add">Add</a>
+              <li class="breadcrumb-item"><a href="javascript:void(0)" id="btn-add" data-toggle="modal" data-target="#add-update-modal">Add</a>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -156,7 +156,9 @@
 <script th:src="@{/adminlte/plugins/sweetalert2/sweetalert2.min.js}"></script>
 <script th:src="@{/adminlte/dist/js/sweetalert2-genericcrud.js}"></script>
 
-<!-- Card Based Pageable Table Script -->
+<!-- (Local) Page Utils JS -->
+<script th:src="@{/adminlte/dist/js/page-utils.js}"></script>
+<!-- (Local) Card Based Pageable Table Script -->
 <script th:src="@{/adminlte/dist/js/pageabletable.js}"></script>
 
 <!-- Category Table Script -->
