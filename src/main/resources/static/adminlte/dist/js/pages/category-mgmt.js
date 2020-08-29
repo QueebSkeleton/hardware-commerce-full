@@ -16,8 +16,7 @@ $("a#btn-add").click(function() {
 		url: "categories/add-modal-form",
 		dataType: "html",
 		success: function(data) {
-			$("div#add-update-modal > div.modal-dialog").html(data);
-			$("div#add-update-modal").modal("show");
+			$("div#add-update-modal > div.modal-dialog").append(data);
 		},
 		error: function(xhr, textStatus, errorThrown) {
 			if(xhr.status === 400)
@@ -46,7 +45,6 @@ $("div#category-table-card > div.card-content").on("click", "button.btn-update",
 		},
 		success: function(data) {
 			$("div#add-update-modal > div.modal-dialog").html(data);
-			$("div#add-update-modal").modal("show");
 		},
 		error: function(xhr, textStatus, errorThrown) {
 			if(xhr.status === 400)
