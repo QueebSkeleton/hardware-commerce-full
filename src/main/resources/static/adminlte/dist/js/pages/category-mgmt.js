@@ -6,6 +6,8 @@
  * - Sweet Alert 2 JS
 */
 
+var categoryTableCard = new CardBasedPageableTable("#category-table-card", "categories/table", "name", "asc");
+
 // Add Button Click
 $("a#btn-add").click(function() {
 	
@@ -16,6 +18,7 @@ $("a#btn-add").click(function() {
 		url: "categories/add-modal-form",
 		dataType: "html",
 		success: function(data) {
+			$("div#add-update-modal > div.modal-dialog").empty();
 			$("div#add-update-modal > div.modal-dialog").append(data);
 		},
 		error: function(xhr, textStatus, errorThrown) {
@@ -44,7 +47,8 @@ $("div#category-table-card > div.card-content").on("click", "button.btn-update",
 			"id": $(this).data("id")
 		},
 		success: function(data) {
-			$("div#add-update-modal > div.modal-dialog").html(data);
+			$("div#add-update-modal > div.modal-dialog").empty();
+			$("div#add-update-modal > div.modal-dialog").append(data);
 		},
 		error: function(xhr, textStatus, errorThrown) {
 			if(xhr.status === 400)
