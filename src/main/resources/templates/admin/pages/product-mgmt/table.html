@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<th:block xmlns:th="https://thymeleaf.org">
+  
+  <div class="card-body table-responsive p-0">
+    <table class="table table-hover text-nowrap" id="product-table">
+      <thead>
+        <tr>
+          <th class="sortable" data-column-field="name" th:data-sort-dir="${nameOrder?.getDirection()?.toString()?.toLowerCase()}">
+            Name
+            <span class="float-right">
+              <i class="fas fa-arrow-up fa-xs" th:classappend="${nameOrder == null or nameOrder?.isDescending()} ? ' text-muted'"></i>
+              <i class="fas fa-arrow-down fa-xs" th:classappend="${nameOrder == null or nameOrder?.isAscending()} ? ' text-muted'"></i>
+            </span>
+          </th>
+          <th class="sortable" data-column-field="category.name" th:data-sort-dir="${categoryNameOrder?.getDirection()?.toString()?.toLowerCase()}">
+            Category
+            <span class="float-right">
+              <i class="fas fa-arrow-up fa-xs" th:classappend="${categoryNameOrder == null or categoryNameOrder?.isDescending()} ? ' text-muted'"></i>
+              <i class="fas fa-arrow-down fa-xs" th:classappend="${categoryNameOrder == null or categoryNameOrder?.isAscending()} ? ' text-muted'"></i>
+            </span>
+          </th>
+          <th class="sortable" data-column-field="unitsInStock" th:data-sort-dir="${unitsInStockOrder?.getDirection()?.toString()?.toLowerCase()}">
+            Stock
+            <span class="float-right">
+              <i class="fas fa-arrow-up fa-xs" th:classappend="${unitsInStockOrder == null or unitsInStockOrder?.isDescending()} ? ' text-muted'"></i>
+              <i class="fas fa-arrow-down fa-xs" th:classappend="${unitsInStockOrder == null or unitsInStockOrder?.isAscending()} ? ' text-muted'"></i>
+            </span>
+          </th>
+          <th class="sortable" data-column-field="unitPrice" th:data-sort-dir="${unitPriceOrder?.getDirection()?.toString()?.toLowerCase()}">
+            Unit Price
+            <span class="float-right">
+              <i class="fas fa-arrow-up fa-xs" th:classappend="${unitPriceOrder == null or unitPriceOrder?.isDescending()} ? ' text-muted'"></i>
+              <i class="fas fa-arrow-down fa-xs" th:classappend="${unitPriceOrder == null or unitPriceOrder?.isAscending()} ? ' text-muted'"></i>
+            </span>
+          </th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <th:block th:unless="${productPage.isEmpty()}">
+          <tr th:each="product : ${productPage.getContent()}" th:object="${product}">
+            <td th:text="*{name}">Test</td>
+            <td th:text="*{category.name}">Test</td>
+            <td th:text="*{unitsInStock}">Test</td>
+            <td th:text="*{unitPrice}">Test</td>
+            <td>
+              <div class="btn-group">
+                <button type="button" class="btn btn-sm btn-primary btn-update" th:data-id="*{id}" data-toggle="modal" data-target="#add-update-modal">
+                  <i class="fas fa-edit"></i> Edit
+                </button>
+                <button type="button" class="btn btn-sm btn-danger btn-delete" th:data-id="*{id}" th:data-name="*{name}" data-toggle="modal" data-target="#delete-modal">
+                  <i class="fas fa-trash"></i> Delete
+                </button>
+              </div>
+            </td>
+          </tr>
+        </th:block>
+        <tr th:if="${productPage.isEmpty()}">
+          <td colspan="5" class="text-center">No data available in table</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+  <div class="card-footer clearfix">
+    <b th:unless="${productPage.isEmpty()}">Page [[${productPage.getPageable().getPageNumber() + 1}]] of [[${productPage.getTotalPages()}]]</b>
+    <ul class="pagination pagination-sm m-0 float-right">
+      <li class="page-item" th:classappend="${productPage.isEmpty() or productPage.getPageable().getPageNumber() == 0} ? ' disabled'">
+        <a class="page-link" href="#" id="prev-page">
+          <i class="fas fa-arrow-left fa-xs"></i>
+        </a>
+      </li>
+      <th:block th:if="${productPage.getTotalPages() != 0}">
+        <li class="page-item" th:each="pageNumber : ${#numbers.sequence(0, productPage.getTotalPages() - 1)}" th:classappend="${productPage.getPageable().getPageNumber() == pageNumber} ? ' active'">
+          <a class="page-link page-number" href="#" th:text="${pageNumber + 1}" th:data-page-number="${pageNumber}"></a>
+        </li>
+      </th:block>
+      <li class="page-item" th:classappend="${productPage.isEmpty() or productPage.getPageable().getPageNumber() == productPage.getTotalPages() - 1} ? ' disabled'">
+        <a class="page-link" href="#" id="next-page">
+          <i class="fas fa-arrow-right fa-xs"></i>
+        </a>
+      </li>
+    </ul>
+  </div>
+  
+</th:block>
