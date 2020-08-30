@@ -8,31 +8,31 @@ public class VendorSpecs {
 	
 	public static Specification<Vendor> nameContainsIgnoreCase(String name) {
 		return (root, query, criteriaBuilder) -> {
-			return criteriaBuilder.like(criteriaBuilder.upper(root.get("name")), "%" + name + "%");
+			return criteriaBuilder.like(criteriaBuilder.upper(root.get("name")), "%" + name.toUpperCase() + "%");
 		};
 	}
 	
 	public static Specification<Vendor> addressContainsIgnoreCase(String address) {
 		return (root, query, criteriaBuilder) -> {
-			return criteriaBuilder.like(criteriaBuilder.upper(root.get("address")), "%" + address + "%");
+			return criteriaBuilder.like(criteriaBuilder.upper(root.get("address")), "%" + address.toUpperCase() + "%");
 		};
 	}
 	
 	public static Specification<Vendor> contactContainsIgnoreCase(String contact) {
 		return (root, query, criteriaBuilder) -> {
-			return criteriaBuilder.like(criteriaBuilder.upper(root.get("contact")), "%" + contact + "%");
+			return criteriaBuilder.like(criteriaBuilder.upper(root.get("contact")), "%" + contact.toUpperCase() + "%");
 		};
 	}
 	
 	public static Specification<Vendor> emailAddressContainsIgnoreCase(String emailAddress) {
 		return (root, query, criteriaBuilder) -> {
-			return criteriaBuilder.like(criteriaBuilder.upper(root.get("emailAddress")), "%" + emailAddress + "%");
+			return criteriaBuilder.like(criteriaBuilder.upper(root.get("emailAddress")), "%" + emailAddress.toUpperCase() + "%");
 		};
 	}
 	
 	public static Specification<Vendor> websiteUrlContainsIgnoreCase(String websiteUrl) {
 		return (root, query, criteriaBuilder) -> {
-			return criteriaBuilder.like(criteriaBuilder.upper(root.get("websiteUrl")), "%" + websiteUrl + "%");
+			return criteriaBuilder.like(criteriaBuilder.upper(root.get("websiteUrl")), "%" + websiteUrl.toUpperCase() + "%");
 		};
 	}
 
