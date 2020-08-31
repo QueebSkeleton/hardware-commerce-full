@@ -1,5 +1,7 @@
 package com.github.queebskeleton.hardwarecommerce.service.impl;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -26,6 +28,11 @@ public class CategoryServiceImpl implements CategoryService {
 				findAllByNameContainsIgnoreCaseOrDescriptionContainsIgnoreCase(
 						search, search, pageable);
 		
+	}
+
+	@Override
+	public List<Category> getAllCategories() {
+		return categoryJpaRepository.findAll();
 	}
 
 	@Override

@@ -8,58 +8,6 @@
 
 var productTableCard = new CardBasedPageableTable("#product-table-card", "products/table", "name", "asc");
 
-// Add Button Click
-$("a#btn-add").click(function() {
-	
-	// Request Server for empty Category Modal Form,
-	// then populate add-update-modal with response html data
-	$.ajax({
-		type: "GET",
-		url: "products/add-modal-form",
-		dataType: "html",
-		success: function(data) {
-			$("div#add-update-modal > div.modal-dialog").empty();
-			$("div#add-update-modal > div.modal-dialog").append(data);
-		},
-		error: function(xhr, textStatus, errorThrown) {
-			if(xhr.status === 400)
-				CrudNotifToast.fire({
-					icon: 'error',
-					title: 'An error has occured. Please refresh the page and try again.'
-				});
-		}
-	});
-	
-});
-
-// Update Button Click
-$("div#category-table-card > div.card-content").on("click", "button.btn-update", function() {
-	
-	// Request Server for Category Modal form given its database id,
-	// then populate add-update-modal with response html data
-	
-	// ID is set as data attribute on the button
-	$.ajax({
-		type: "GET",
-		url: "categories/update-modal-form",
-		dataType: "html",
-		data: {
-			"id": $(this).data("id")
-		},
-		success: function(data) {
-			$("div#add-update-modal > div.modal-dialog").empty();
-			$("div#add-update-modal > div.modal-dialog").append(data);
-		},
-		error: function(xhr, textStatus, errorThrown) {
-			if(xhr.status === 400)
-				CrudNotifToast.fire({
-					icon: 'error',
-					title: 'An error has occured. Please refresh the page and try again.'
-				});
-		}
-	});
-});
-
 // Delete Button Click (popup confirmation modal)
 $("div#category-table-card > div.card-content").on("click", "button.btn-delete", function() {
     
@@ -105,33 +53,4 @@ $("div#delete-modal > div.modal-dialog > div.modal-content > div.modal-footer > 
 			});
 		}
     });
-});
-
-// Add-Update Form Submit
-$("div#add-update-modal").on("submit", "#add-update-form", function(e) {
-	// Prevent default form submit action
-	e.preventDefault();
-	
-	// Create POST request containing all category data from the form
-	$.ajax({
-		type: $(this).attr("method"),
-		url: $(this).attr("action"),
-		data: $(this).serialize(),
-		success: function() {
-			$("div#add-update-modal").modal("hide");
-			categoryTableCard.render();
-			CrudNotifToast.fire({
-				icon: 'success',
-				title: 'Category was successfully saved.'
-			});
-		},
-		error: function(xhr, testStatus, errorThrown) {
-			$("div#add-update-modal").modal("hide");
-			CrudNotifToast.fire({
-				icon: 'success',
-				title: 'An error has occured while trying to save Category.' 
-					+ 'If the problem persists after trying again, please contact support.'
-			});
-		}
-	});
 });
