@@ -1,5 +1,7 @@
 package com.github.queebskeleton.hardwarecommerce.dto;
 
+import java.util.List;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import com.github.queebskeleton.hardwarecommerce.entity.Category;
@@ -26,6 +28,6 @@ public class AdminProductAddForm {
 	
 	private double unitPrice;
 	
-	private MultipartFile[] images;
+	private List<MultipartFile> images;
 
 }

@@ -7,7 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
@@ -20,26 +19,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 public class Product {
-	
-	@Data
-	@NoArgsConstructor
-	@AllArgsConstructor
-	@Entity
-	public static class Image {
-		
-		@Id
-		@GeneratedValue(strategy = GenerationType.IDENTITY)
-		private Long id;
-		
-		@ManyToOne
-		private Product product;
-		
-		private String extension;
-		
-		@Lob
-		private byte[] data;
-		
-	}
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -64,6 +43,6 @@ public class Product {
 	private double unitPrice;
 	
 	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-	private List<Image> images;
+	private List<ProductImage> images;
 
 }

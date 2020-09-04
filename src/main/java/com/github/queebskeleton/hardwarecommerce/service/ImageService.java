@@ -1,9 +1,13 @@
 package com.github.queebskeleton.hardwarecommerce.service;
 
-import com.github.queebskeleton.hardwarecommerce.entity.Product;
+import java.util.List;
+import java.util.UUID;
+
+import com.github.queebskeleton.hardwarecommerce.dto.EntityImage;
 
 public interface ImageService {
-
-	Product.Image getProductImage(Long id);
+	
+	EntityImage getProductImage(UUID id);
+	void saveAll(List<EntityImage> images);
 	
 }
