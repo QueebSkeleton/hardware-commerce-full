@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://thymeleaf.org">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+  <title>H-Commerce | Manage Products</title>
+
+  <th:block th:replace="~{admin/fragments/common-links :: cssLinks}"></th:block>
+  
+  <!-- Kartik 5 Bootstrap FileInput CSS -->
+  <th:block th:replace="~{admin/fragments/common-links :: kartikBootstrapFileInputStylesheets}"></th:block>
+  
+</head>
+
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+  
+  <!--/* Insert topbar fragment */-->
+  <nav th:replace="~{admin/fragments/navs :: topbar}"></nav>
+
+  <!--/* Insert sidebar fragment */-->
+  <aside th:replace="~{admin/fragments/navs :: sidebar}"></aside>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0 text-dark">Add a Product</h1>
+          </div><!-- /.col -->
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a th:href="@{/admin/dashboard}">Dashboard</a></li>
+              <li class="breadcrumb-item"><a th:href="@{/admin/products}">Manage Products</a></li>
+              <li class="breadcrumb-item active">Add</li>
+            </ol>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <div class="content">
+      <div class="container-fluid">
+      
+        <div class="card">
+        
+          <div class="card-header bg-primary">
+            <h4 class="card-title">
+              <i class="fas fa-exclamation-circle"></i>
+              Product Information
+            </h4>
+          </div>
+          
+          <form th:object="${productForm}" enctype="multipart/form-data" id="product-form" method="POST" action="save">
+          
+            <div class="card-body">
+            
+                <div class="row">
+                
+                  <div class="col-md-6">
+                  
+                    <div class="form-group">
+                      <label for="name" class="form-label">Name</label>
+                      <input type="text" th:field="*{name}" class="form-control" placeholder="Enter product name here">
+                    </div>
+                    
+                    <div class="form-group">
+                      <label for="category.id" class="form-label">Category</label>
+                      <select th:field="*{category.id}" class="form-control">
+                        <option th:each="category : ${categoryList}" th:value="${category.id}" th:text="${category.name}"></option>
+                      </select>
+                    </div>
+                    
+                    <div class="form-group">
+                      <label for="vendor.id" class="form-label">Vendor</label>
+                      <select th:field="*{vendor.id}" class="form-control">
+                        <option th:each="vendor : ${vendorList}" th:value="${vendor.id}" th:text="${vendor.name}"></option>
+                      </select>
+                    </div>
+                    
+                    <div class="form-group">
+                      <label for="barcode" class="form-label">Barcode</label>
+                      <input type="text" th:field="*{barcode}" class="form-control" placeholder="Enter product barcode here">
+                    </div>
+                  
+                  </div>
+                
+                  <div class="col-md-6">
+                    
+                    <div class="form-group">
+                      <label for="sku" class="form-label">Stock Keeping Unit</label>
+                      <input type="text" th:field="*{stockKeepingUnit}" class="form-control" placeholder="Enter SKU here">
+                    </div>
+                  
+                    <div class="form-group">
+                      <label for="initialStock" class="form-label">Initial Stock</label>
+                      <input type="number" th:field="*{initialStock}" class="form-control" placeholder="Enter stock here">
+                    </div>
+                    
+                    <div class="form-group">
+                      <label for="unitPrice" class="form-label">Price ea.</label>
+                      <input type="number" step="any" th:field="*{unitPrice}" class="form-control" placeholder="Enter price here">
+                    </div>
+                    
+                  </div>
+                  
+                </div>
+                
+                <hr>
+                
+                <div class="form-group">
+                  <label for="images" class="form-label">Images</label>
+                  <div>
+                    <input type="file" name="images">
+                  </div>
+                </div>
+                
+            </div>
+            
+            <div class="card-footer">
+              <button type="submit" class="btn btn-primary float-right">
+                <i class="fas fa-plus-circle"></i>
+                Save product
+              </button>
+            </div>
+            
+          </form>
+          
+        </div>
+        
+      </div>
+      <!-- /.container-fluid -->
+    </div>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+  <!-- Control Sidebar -->
+  <aside th:replace="~{admin/fragments/parts :: controlSidebar}"></aside>
+
+  <!-- Main Footer -->
+  <footer th:replace="~{admin/fragments/parts :: mainFooter}"></footer>
+  
+</div>
+<!-- ./wrapper -->
+
+<!-- REQUIRED SCRIPTS -->
+<th:block th:replace="~{admin/fragments/common-links :: jsLinks}"></th:block>
+
+<!-- Kartik 5 Bootstrap FileInput JS Files -->
+<th:block th:replace="~{admin/fragments/common-links :: kartikBootstrapFileInputScripts}"></th:block>
+
+<!-- 
+<script>
+  	$("form#product-form").find("input[name='images']").fileinput({
+  		theme: 'explorer-fas',
+  		showUpload: false,
+        overwriteInitial: false,
+        allowedFileExtensions: ['jpeg', 'jpg', 'png']
+    });
+</script>
+-->
+
+</body>
+</html>

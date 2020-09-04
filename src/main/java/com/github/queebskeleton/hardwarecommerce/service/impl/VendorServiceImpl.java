@@ -1,5 +1,7 @@
 package com.github.queebskeleton.hardwarecommerce.service.impl;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -31,6 +33,11 @@ public class VendorServiceImpl implements VendorService {
 				.or(VendorSpecs.emailAddressContainsIgnoreCase(search))
 				.or(VendorSpecs.websiteUrlContainsIgnoreCase(search)), pageable);
 		
+	}
+
+	@Override
+	public List<Vendor> getAllVendors() {
+		return vendorJpaRepository.findAll();
 	}
 
 	@Override

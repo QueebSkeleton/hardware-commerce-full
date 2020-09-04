@@ -20,5 +20,20 @@
     <!-- AdminLTE -->
     <script th:src="@{/adminlte/dist/js/adminlte.js}"></script>
   </th:block>
+  
+  <th:block th:fragment="kartikBootstrapFileInputStylesheets">
+    <link th:href="@{/adminlte/plugins/kartik-v-bootstrap-fileinput/css/fileinput.css}" media="all" rel="stylesheet" type="text/css">
+    <link th:href="@{/adminlte/plugins/kartik-v-bootstrap-fileinput/themes/explorer-fas/theme.css}" media="all" rel="stylesheet" type="text/css">
+  </th:block>
+  
+  <th:block th:fragment="kartikBootstrapFileInputScripts">
+    <script th:src="@{/adminlte/plugins/kartik-v-bootstrap-fileinput/js/plugins/piexif.js}" type="text/javascript"></script>
+    <script th:src="@{/adminlte/plugins/kartik-v-bootstrap-fileinput/js/plugins/sortable.js}" type="text/javascript"></script>
+    <script th:src="@{/adminlte/plugins/kartik-v-bootstrap-fileinput/js/fileinput.js}" type="text/javascript"></script>
+    <script th:src="@{/adminlte/plugins/kartik-v-bootstrap-fileinput/js/locales/fr.js}" type="text/javascript"></script>
+    <script th:src="@{/adminlte/plugins/kartik-v-bootstrap-fileinput/js/locales/es.js}" type="text/javascript"></script>
+    <script th:src="@{/adminlte/plugins/kartik-v-bootstrap-fileinput/themes/fas/theme.js}" type="text/javascript"></script>
+    <script th:src="@{/adminlte/plugins/kartik-v-bootstrap-fileinput/themes/explorer-fas/theme.js}" type="text/javascript"></script>
+  </th:block>
 
 </html>
