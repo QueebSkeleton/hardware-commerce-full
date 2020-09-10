@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.github.queebskeleton.hardwarecommerce.dto.AdminProductAddForm;
 import com.github.queebskeleton.hardwarecommerce.dto.EntityImage;
+import com.github.queebskeleton.hardwarecommerce.dto.FrontStorePagination;
 import com.github.queebskeleton.hardwarecommerce.entity.Product;
 import com.github.queebskeleton.hardwarecommerce.entity.ProductImage;
 import com.github.queebskeleton.hardwarecommerce.entity.spec.ProductSpecs;
@@ -124,6 +125,57 @@ public class ProductServiceImpl implements ProductService {
 		} else
 			productJpaRepository.save(product);
 		
+	}
+
+	@Override
+	public Page<Product> getProductPage(FrontStorePagination paginationData, Pageable pageable) {
+		
+		Specification<Product> specification = Specification.where(null);
+		
+		if(paginationData.getCategoryIds() != null)
+			specification = specification.and(
+					ProductSpecs.categoryIdIn(paginationData.getCategoryIds()));
+		
+		if(paginationData.getVendorIds() != null)
+			specification = specification.or(
+					ProductSpecs.vendorIdIn(paginationData.getVendorIds()));
+		
+		if(paginationData.getMinPrice() != null && paginationData.getMaxPrice() != null)
+			specification = specification.and(
+					ProductSpecs.unitPriceBetween(
+							paginationData.getMinPrice(),
+							paginationData.getMaxPrice()));
+		
+		// TODO: Query for default paging settings (in Spring Data MVC Integration)
+		// if request does not include pageable parameters
+		Page<Product> productPage =
+				productJpaRepository.findAll(
+						specification,
+						pageable);
+		
+		productPage.getContent().forEach(product -> product.setImages(new ArrayList<>()));
+		
+		Map<Long, Product> productsMap =
+				productPage.getContent()
+						.parallelStream()
+						.collect(
+							Collectors.toMap(
+									product -> product.getId(),
+									product -> product));
+		
+		productImageJpaRepository
+				.findByProduct_IdInFetchProduct(
+						productPage.getContent()
+							.parallelStream()
+							.mapToLong(product -> product.getId())
+							.boxed()
+							.collect(Collectors.toList()))
+				.forEach(productImage ->
+						productsMap.get(productImage.getProduct().getId())
+								.getImages()
+								.add(productImage));
+		
+		return productPage;
 	}
 
 }
