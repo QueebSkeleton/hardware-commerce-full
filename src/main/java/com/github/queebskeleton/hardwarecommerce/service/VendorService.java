@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.github.queebskeleton.hardwarecommerce.entity.Vendor;
+import com.github.queebskeleton.hardwarecommerce.entity.projection.IVendorProductCount;
 
 public interface VendorService {
 	
@@ -14,5 +15,7 @@ public interface VendorService {
 	Vendor getVendorById(Long id);
 	void saveVendor(Vendor vendor);
 	void deleteVendorById(Long id);
+	
+	List<IVendorProductCount> getAllVendorsWithProductCount();
 
 }
