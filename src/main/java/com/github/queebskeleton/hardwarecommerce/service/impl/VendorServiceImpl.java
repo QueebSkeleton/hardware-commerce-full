@@ -1,11 +1,15 @@
 package com.github.queebskeleton.hardwarecommerce.service.impl;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.github.queebskeleton.hardwarecommerce.entity.Vendor;
+import com.github.queebskeleton.hardwarecommerce.entity.projection.IVendorProductCount;
+
 import com.github.queebskeleton.hardwarecommerce.entity.spec.VendorSpecs;
 import com.github.queebskeleton.hardwarecommerce.repository.VendorJpaRepository;
 import com.github.queebskeleton.hardwarecommerce.service.VendorService;
@@ -34,6 +38,11 @@ public class VendorServiceImpl implements VendorService {
 	}
 
 	@Override
+	public List<Vendor> getAllVendors() {
+		return vendorJpaRepository.findAll();
+	}
+
+	@Override
 	public Vendor getVendorById(Long id) {
 		return vendorJpaRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid id."));
 	}
@@ -46,6 +55,11 @@ public class VendorServiceImpl implements VendorService {
 	@Override
 	public void deleteVendorById(Long id) {
 		vendorJpaRepository.deleteById(id);
+  }
+  
+	@Override
+	public List<IVendorProductCount> getAllVendorsWithProductCount() {
+		return vendorJpaRepository.findAllWithProductCount();
 	}
-
+  
 }
