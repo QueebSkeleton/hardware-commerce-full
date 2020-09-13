@@ -9,7 +9,7 @@ public interface UserService {
 	
 	Page<User> getCustomerPage(Pageable pageable, String search);
 	User getUserById(Long id);
-	void saveUser(User user);
+	void saveCustomer(User customer);
 	void deleteUserById(Long id);
 
 }

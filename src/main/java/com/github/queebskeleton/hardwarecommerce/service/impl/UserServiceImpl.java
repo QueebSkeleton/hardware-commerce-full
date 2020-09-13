@@ -27,29 +27,28 @@ public class UserServiceImpl implements UserService {
 		
 		return userJpaRepository.findAll(
 				Specification.where(UserSpecs.isCustomer()
-				.and(UserSpecs.firstNameContainsIgnoreCase(search))
-				.and(UserSpecs.lastNameContainsIgnoreCase(search))
-				.and(UserSpecs.emailAddressContainsIgnoreCase(search))
-				.and(UserSpecs.contactNumberContainsIgnoreCase(search))), pageable);
+				.and(
+					UserSpecs.firstNameContainsIgnoreCase(search)
+					.or(UserSpecs.lastNameContainsIgnoreCase(search))
+					.or(UserSpecs.emailAddressContainsIgnoreCase(search))
+					.or(UserSpecs.contactNumberContainsIgnoreCase(search)))), pageable);
 		
 	}
 
 	@Override
 	public User getUserById(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		return userJpaRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid User ID."));
 	}
 
 	@Override
-	public void saveUser(User user) {
-		// TODO Auto-generated method stub
-		
+	public void saveCustomer(User customer) {
+		customer.setType(User.Type.CUSTOMER);
+		userJpaRepository.save(customer);
 	}
 
 	@Override
 	public void deleteUserById(Long id) {
-		// TODO Auto-generated method stub
-		
+		userJpaRepository.deleteById(id);
 	}
 
 }

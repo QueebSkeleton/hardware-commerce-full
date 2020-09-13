@@ -41,16 +41,30 @@ public class CustomerManagementController {
 		return "admin/pages/customer-mgmt/table";
 	}
 	
-	@GetMapping("/add")
-	public String addForm(Model model) {
-		return null;
+	@GetMapping("/add-modal-form")
+	public String addModalForm(Model model) {
+		model.addAttribute("customer", new User());
+		model.addAttribute("modalHeaderText", "Add Customer");
+		
+		return "admin/pages/customer-mgmt/add-update-modal";
+	}
+	
+	@GetMapping("/update-modal-form")
+	public String updateModalForm(@RequestParam Long id, Model model) {
+		if(id == null)
+			throw new IllegalArgumentException("Invalid parameters given.");
+			
+		model.addAttribute("customer", userService.getUserById(id));
+		model.addAttribute("modalHeaderText", "Update Customer");
+		
+		return "admin/pages/customer-mgmt/add-update-modal";
 	}
 	
 	@PostMapping("/save")
-	public String saveUser(User user) {
-		userService.saveUser(user);
+	public @ResponseBody ResponseEntity<Void> save(User customer) {
+		userService.saveCustomer(customer);
 		
-		return "redirect:/admin/products";
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/delete")
