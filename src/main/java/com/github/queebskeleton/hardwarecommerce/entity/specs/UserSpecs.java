@@ -6,6 +6,12 @@ import com.github.queebskeleton.hardwarecommerce.entity.User;
 
 public class UserSpecs {
 	
+	public static Specification<User> isAdministrator() {
+		return (root, query, builder) -> {
+			return builder.equal(root.get("type"), User.Type.ADMINISTRATOR);
+		};
+	}
+	
 	public static Specification<User> isCustomer() {
 		return (root, query, builder) -> {
 			return builder.equal(root.get("type"), User.Type.CUSTOMER);
