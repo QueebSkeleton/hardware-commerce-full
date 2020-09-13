@@ -16,5 +16,5 @@ public interface VendorJpaRepository extends JpaRepository<Vendor, Long>, JpaSpe
 	@Query("SELECT v AS vendor, COUNT(p.id) AS totalProductCount FROM Product p RIGHT OUTER JOIN p.vendor v"
 			+ " GROUP BY v.id")
 	List<IVendorProductCount> findAllWithProductCount();
-  
+	
 }
