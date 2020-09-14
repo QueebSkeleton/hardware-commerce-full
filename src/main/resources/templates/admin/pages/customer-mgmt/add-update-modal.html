@@ -1,0 +1,59 @@
+<th:block xmlns:th="https://thymeleaf.org">
+
+  <div class="modal-content">
+  
+    <div class="modal-header">
+      <h4 class="modal-title" th:text="${modalHeaderText}"></h4>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    
+    <form th:object="${customer}" method="POST" th:action="@{/admin/customers/save}" id="add-update-form">
+    
+      <div class="modal-body">
+      
+        <input type="hidden" name="id" th:value="*{id}">
+      
+        <div class="form-group">
+          <label for="firstName">First Name</label>
+          <input type="text" th:field="*{firstName}" required placeholder="Enter first name here" class="form-control">
+        </div>
+        
+        <div class="form-group">
+          <label for="lastName">Last Name</label>
+          <input type="text" th:field="*{lastName}" required placeholder="Enter last name here" class="form-control">
+        </div>
+        
+        <div class="form-group">
+          <label for="emailAddress">Email Address</label>
+          <input type="email" th:field="*{emailAddress}" required placeholder="Enter email here" class="form-control">
+        </div>
+        
+        <div class="form-group">
+          <label for="contactNumber">Contact Number</label>
+          <input type="text" th:field="*{contactNumber}" required placeholder="Enter contact here" class="form-control">
+        </div>
+        
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" th:field="*{username}" required placeholder="Enter username here" class="form-control">
+        </div>
+        
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="text" th:field="*{password}" required placeholder="Enter password here" class="form-control">
+        </div>
+        
+      </div>
+      
+      <div class="modal-footer justify-content-between">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Save</button>
+      </div>
+      
+    </form>
+    
+  </div>
+
+</th:block>
