@@ -6,7 +6,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.github.queebskeleton.hardwarecommerce.entity.User;
-import com.github.queebskeleton.hardwarecommerce.entity.specs.UserSpecs;
+import com.github.queebskeleton.hardwarecommerce.entity.spec.UserSpecs;
 import com.github.queebskeleton.hardwarecommerce.repository.UserJpaRepository;
 import com.github.queebskeleton.hardwarecommerce.service.UserService;
 

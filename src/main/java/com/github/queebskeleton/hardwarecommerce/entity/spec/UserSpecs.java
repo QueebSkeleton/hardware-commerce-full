@@ -1,4 +1,4 @@
-package com.github.queebskeleton.hardwarecommerce.entity.specs;
+package com.github.queebskeleton.hardwarecommerce.entity.spec;
 
 import org.springframework.data.jpa.domain.Specification;
 
