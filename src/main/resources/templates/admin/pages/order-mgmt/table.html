@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<th:block xmlns:th="https://thymeleaf.org">
+  
+  <div class="card-body table-responsive p-0">
+    <table class="table table-hover text-nowrap" id="order-table">
+      <thead>
+        <tr>
+          <th class="sortable" data-column-field="placedBy.firstName" th:data-sort-dir="${placedByFirstNameOrder?.getDirection()?.toString()?.toLowerCase()}">
+            Placed By
+            <span class="float-right">
+              <i class="fas fa-arrow-up fa-xs" th:classappend="${placedByFirstNameOrder == null or placedByFirstNameOrder?.isDescending()} ? ' text-muted'"></i>
+              <i class="fas fa-arrow-down fa-xs" th:classappend="${placedByFirstNameOrder == null or placedByFirstNameOrder?.isAscending()} ? ' text-muted'"></i>
+            </span>
+          </th>
+          <th class="sortable" data-column-field="placedOn" th:data-sort-dir="${placedOnOrder?.getDirection()?.toString()?.toLowerCase()}">
+            Placed On
+            <span class="float-right">
+              <i class="fas fa-arrow-up fa-xs" th:classappend="${placedOnOrder == null or placedOnOrder?.isDescending()} ? ' text-muted'"></i>
+              <i class="fas fa-arrow-down fa-xs" th:classappend="${placedOnOrder == null or placedOnOrder?.isAscending()} ? ' text-muted'"></i>
+            </span>
+          </th>
+          <th class="sortable" data-column-field="status" th:data-sort-dir="${statusOrder?.getDirection()?.toString()?.toLowerCase()}">
+            Status
+            <span class="float-right">
+              <i class="fas fa-arrow-up fa-xs" th:classappend="${statusOrder == null or statusOrder?.isDescending()} ? ' text-muted'"></i>
+              <i class="fas fa-arrow-down fa-xs" th:classappend="${statusOrder == null or statusOrder?.isAscending()} ? ' text-muted'"></i>
+            </span>
+          </th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <th:block th:if="${!orderPage.isEmpty()}">
+          <tr th:each="order : ${orderPage.getContent()}" th:object="${order}">
+            <td th:text="*{placedBy.firstName} + ' ' + *{placedBy.lastName}"></td>
+            <td th:text="*{placedOn}"></td>
+            <td th:insert="~{admin/pages/order-mgmt/status-badge :: status(*{status.toString()})}"></td>
+            <td>
+              <div class="btn-group">
+                <button type="button" class="btn btn-sm btn-primary btn-update" th:data-id="*{id}" data-toggle="modal" data-target="#add-update-modal">
+                  <i class="fas fa-edit"></i> Edit
+                </button>
+                <button type="button" class="btn btn-sm btn-danger btn-delete" th:data-id="*{id}" th:data-name="*{placedBy.firstName} + ' ' + *{placedBy.lastName}" data-toggle="modal" data-target="#delete-modal">
+                  <i class="fas fa-trash"></i> Delete
+                </button>
+              </div>
+            </td>
+          </tr>
+        </th:block>
+        <tr th:if="${orderPage.isEmpty()}">
+          <td colspan="5" class="text-center">No data available in table</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+  <div class="card-footer clearfix">
+    <b th:unless="${orderPage.isEmpty()}">Page [[${orderPage.getPageable().getPageNumber() + 1}]] of [[${orderPage.getTotalPages()}]]</b>
+    <ul class="pagination pagination-sm m-0 float-right">
+      <li class="page-item" th:classappend="${orderPage.isEmpty() or orderPage.getPageable().getPageNumber() == 0} ? ' disabled'">
+        <a class="page-link" href="#" id="prev-page">
+          <i class="fas fa-arrow-left fa-xs"></i>
+        </a>
+      </li>
+      <th:block th:if="${orderPage.getTotalPages() != 0}">
+        <li class="page-item" th:each="pageNumber : ${#numbers.sequence(0, orderPage.getTotalPages() - 1)}" th:classappend="${orderPage.getPageable().getPageNumber() == pageNumber} ? ' active'">
+          <a class="page-link page-number" href="#" th:text="${pageNumber + 1}" th:data-page-number="${pageNumber}"></a>
+        </li>
+      </th:block>
+      <li class="page-item" th:classappend="${orderPage.isEmpty() or orderPage.getPageable().getPageNumber() == orderPage.getTotalPages() - 1} ? ' disabled'">
+        <a class="page-link" href="#" id="next-page">
+          <i class="fas fa-arrow-right fa-xs"></i>
+        </a>
+      </li>
+    </ul>
+  </div>
+  
+</th:block>
