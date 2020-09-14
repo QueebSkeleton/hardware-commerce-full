@@ -17,6 +17,23 @@ import lombok.RequiredArgsConstructor;
 public class UserServiceImpl implements UserService {
 
 	private final UserJpaRepository userJpaRepository;
+
+	@Override
+	public Page<User> getAdministratorPage(Pageable pageable, String search) {
+		
+		if(search == null)
+			return userJpaRepository.findAll(
+					Specification.where(UserSpecs.isAdministrator()), pageable);
+		
+		return userJpaRepository.findAll(
+				Specification.where(UserSpecs.isAdministrator()
+				.and(
+					UserSpecs.firstNameContainsIgnoreCase(search)
+					.or(UserSpecs.lastNameContainsIgnoreCase(search))
+					.or(UserSpecs.emailAddressContainsIgnoreCase(search))
+					.or(UserSpecs.contactNumberContainsIgnoreCase(search)))), pageable);
+		
+	}
 	
 	@Override
 	public Page<User> getCustomerPage(Pageable pageable, String search) {
@@ -38,6 +55,12 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User getUserById(Long id) {
 		return userJpaRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid User ID."));
+	}
+	
+	@Override
+	public void saveAdministrator(User administrator) {
+		administrator.setType(User.Type.ADMINISTRATOR);
+		userJpaRepository.save(administrator);
 	}
 
 	@Override

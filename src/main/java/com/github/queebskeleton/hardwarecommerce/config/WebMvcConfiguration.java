@@ -28,6 +28,9 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
 		// Administrator - Customer Management Panel
 		registry.addViewController("/admin/customers").setViewName("admin/pages/customer-mgmt/panel");
 		
+		// Administrator - Administrator Management Panel
+		registry.addViewController("/admin/administrators").setViewName("admin/pages/administrator-mgmt/panel");
+		
 	}
 
 }
