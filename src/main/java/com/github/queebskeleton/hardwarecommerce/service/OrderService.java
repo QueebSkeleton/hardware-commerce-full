@@ -10,5 +10,6 @@ public interface OrderService {
 	
 	Page<Order> getOrderPage(Pageable pageable, String search);
 	void addOrder(AdminCustomOrderForm orderForm);
+	void deleteOrderById(Long id);
 
 }

@@ -9,6 +9,12 @@ import com.github.queebskeleton.hardwarecommerce.entity.User;
 
 public class OrderSpecs {
 	
+	public static Specification<Order> idContainsIgnoreCase(String id) {
+		return (root, query, builder) -> {
+			return builder.like(root.get("id"), "%" + id + "%");
+		};
+	}
+	
 	public static Specification<Order> userNameContainsIgnoreCase(String name) {
 		return (root, query, builder) -> {
 			Join<Order, User> orderUserJoin = root.join("placedBy");

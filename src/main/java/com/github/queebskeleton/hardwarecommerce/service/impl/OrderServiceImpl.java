@@ -41,7 +41,8 @@ public class OrderServiceImpl implements OrderService {
 		
 		return orderJpaRepository.findAll(
 				Specification.where(
-						OrderSpecs.userNameContainsIgnoreCase(search)
+						OrderSpecs.idContainsIgnoreCase(search)
+						.or(OrderSpecs.userNameContainsIgnoreCase(search))
 						.or(OrderSpecs.placedOnContainsIgnoreCase(search))
 						.or(OrderSpecs.statusContainsIgnoreCase(search))),
 				pageable,
@@ -93,6 +94,11 @@ public class OrderServiceImpl implements OrderService {
 		// Persist Order Items
 		orderItemJpaRepository.saveAll(order.getOrderItems());
 		
+	}
+
+	@Override
+	public void deleteOrderById(Long id) {
+		orderJpaRepository.deleteById(id);
 	}
 
 }
