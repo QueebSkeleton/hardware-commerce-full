@@ -28,6 +28,8 @@ public class AdminProductAddForm {
 	
 	private double unitPrice;
 	
+	private boolean isTaxable;
+	
 	private List<MultipartFile> images;
 
 }

@@ -42,6 +42,8 @@ public class Product {
 	
 	private double unitPrice;
 	
+	private boolean isTaxable;
+	
 	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
 	private List<ProductImage> images;
 
