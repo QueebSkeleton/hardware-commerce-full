@@ -30,6 +30,15 @@ public class UserSpecs {
 		};
 	}
 	
+	public static Specification<User> nameContainsIgnoreCase(String name) {
+		return (root, query, builder) -> {
+			return builder.like(
+					builder.upper(builder.concat(
+							builder.concat(root.get("firstName"), " "),
+							root.get("lastName"))), "%" + name.toUpperCase() + "%");
+		};
+	}
+	
 	public static Specification<User> emailAddressContainsIgnoreCase(String emailAddress) {
 		return (root, query, builder) -> {
 			return builder.like(builder.upper(root.get("emailAddress")), "%" + emailAddress.toUpperCase() + "%");

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://thymeleaf.org">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+  <title>H-Commerce | Add Order</title>
+
+  <th:block th:replace="~{admin/fragments/common-links :: cssLinks}"></th:block>
+  
+  <!-- Select2 CSS -->
+  <link rel="stylesheet" th:href="@{/adminlte/plugins/select2/css/select2.min.css}">
+  <link rel="stylesheet" th:href="@{/adminlte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css}">
+  
+</head>
+
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+  
+  <!--/* Insert topbar fragment */-->
+  <nav th:replace="~{admin/fragments/navs :: topbar}"></nav>
+
+  <!--/* Insert sidebar fragment */-->
+  <aside th:replace="~{admin/fragments/navs :: sidebar}"></aside>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0 text-dark">Add Custom Order</h1>
+          </div><!-- /.col -->
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a th:href="@{/admin/dashboard}">Dashboard</a></li>
+              <li class="breadcrumb-item"><a th:href="@{/admin/orders}">Manage Orders</a></li>
+              <li class="breadcrumb-item active">Add</li>
+            </ol>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <div class="content">
+      <div class="container-fluid">
+      
+        <div class="card">
+        
+          <div class="card-header bg-primary">
+            <h4 class="card-title">
+              <i class="fas fa-exclamation-circle"></i>
+              Order Information
+            </h4>
+          </div>
+          
+          <form th:object="${adminCustomOrderForm}" method="POST" action="add-custom-form/add">
+          
+            <div class="card-body">
+            
+                <div class="row">
+                
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label for="placedById" class="form-label">Placed By (Customer):</label>
+                      <select th:field="*{placedById}" class="form-control select2" required>
+                      </select>
+                    </div>
+                  </div>
+                  
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label for="placedOn" class="form-label">Placed On:</label>
+                      <input type="datetime-local" th:field="*{placedOn}" class="form-control" required>
+                    </div>
+                  </div>
+                  
+                  <div class="col-md-4">
+                    
+                    <div class="form-group">
+                      <label for="status" class="form-label">Status</label>
+                      <select th:field="*{status}" class="form-control">
+                        <option value="PENDING">Pending</option>
+                        <option value="PROCESSING">Processing</option>
+                        <option value="DELIVERED">Delivered</option>
+                        <option value="DENIED">Denied</option>
+                        <option value="CANCELLED">Cancelled</option>
+                      </select>
+                    </div>
+                  
+                  </div>
+                
+                  <div class="col-md-6">
+                  
+                    <div class="form-group">
+                      <label for="productId" class="form-label">Add an Item:</label>
+                      <select id="productId" class="form-control select2" required>
+                      </select>
+                    </div>
+                    
+                  </div>
+                  
+                </div>
+                    
+                <div class="table-responsive">
+                  <table class="table table-striped" id="order-items-table">
+                    <thead>
+                      <tr>
+                        <th width="20%">Name</th>
+                        <th width="25%">Price ea.</th>
+                        <th width="15%">Quantity</th>
+                        <th width="30%">Subtotal</th>
+                        <th width="10%">Remove</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    
+                    </tbody>
+                  </table>
+                </div>
+                
+                <div class="row d-flex justify-content-end">
+                  <div class="col-md-4 form-group row">
+                    <label for="total" class="col-sm-3 col-form-label">Total:</label>
+                    <div class="col-sm-9">
+                      <input type="number" step="any" readonly class="form-control" id="total" value="0">
+                    </div>
+                  </div>
+                </div>
+                
+            </div>
+            
+            <div class="card-footer">
+              <button type="submit" class="btn btn-primary float-right">
+                <i class="fas fa-plus-circle"></i>
+                Save order
+              </button>
+            </div>
+            
+          </form>
+          
+        </div>
+        
+      </div>
+      <!-- /.container-fluid -->
+    </div>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+  <!-- Control Sidebar -->
+  <aside th:replace="~{admin/fragments/parts :: controlSidebar}"></aside>
+
+  <!-- Main Footer -->
+  <footer th:replace="~{admin/fragments/parts :: mainFooter}"></footer>
+  
+</div>
+<!-- ./wrapper -->
+
+<!-- REQUIRED SCRIPTS -->
+<th:block th:replace="~{admin/fragments/common-links :: jsLinks}"></th:block>
+
+<!-- Select2 JS -->
+<script th:src="@{/adminlte/plugins/select2/js/select2.full.min.js}"></script>
+
+<!-- (Local) Add Custom Order Page Script -->
+<script th:src="@{/adminlte/dist/js/pages/add-custom-order.js}"></script>
+
+</body>
+</html>

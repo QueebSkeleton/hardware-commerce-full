@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 public class UserServiceImpl implements UserService {
 
 	private final UserJpaRepository userJpaRepository;
-
+	
 	@Override
 	public Page<User> getAdministratorPage(Pageable pageable, String search) {
 		
