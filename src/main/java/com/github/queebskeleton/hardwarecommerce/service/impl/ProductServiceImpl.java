@@ -88,6 +88,7 @@ public class ProductServiceImpl implements ProductService {
 				addForm.getStockKeepingUnit(),
 				addForm.getInitialStock(),
 				addForm.getUnitPrice(),
+				addForm.isTaxable(),
 				null);
 		
 		// If images exist, save product, 
