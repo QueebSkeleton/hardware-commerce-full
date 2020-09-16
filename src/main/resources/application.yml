@@ -1,4 +1,9 @@
 
+general:
+  settings:
+    sales-tax-rate: 0.12
+    delivery-fee-php: 50.00
+
 spring:
   
   datasource:
