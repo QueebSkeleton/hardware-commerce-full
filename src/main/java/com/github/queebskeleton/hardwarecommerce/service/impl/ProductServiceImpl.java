@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -16,6 +17,7 @@ import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraphUtils;
 import com.github.queebskeleton.hardwarecommerce.dto.AdminProductAddForm;
 import com.github.queebskeleton.hardwarecommerce.dto.EntityImage;
 import com.github.queebskeleton.hardwarecommerce.dto.FrontStorePagination;
+import com.github.queebskeleton.hardwarecommerce.dto.FrontStoreProductDisplay;
 import com.github.queebskeleton.hardwarecommerce.entity.Product;
 import com.github.queebskeleton.hardwarecommerce.entity.ProductImage;
 import com.github.queebskeleton.hardwarecommerce.entity.spec.ProductSpecs;
@@ -29,6 +31,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Service
 public class ProductServiceImpl implements ProductService {
+	
+	@Value("${general.settings.sales-tax-rate}")
+	private double salesTaxRate;
 	
 	private final ProductJpaRepository productJpaRepository;
 	private final ProductImageJpaRepository productImageJpaRepository;
@@ -180,6 +185,29 @@ public class ProductServiceImpl implements ProductService {
 								.add(productImage));
 		
 		return productPage;
+	}
+
+	@Override
+	public FrontStoreProductDisplay getProductDisplayByProductId(Long productId) {
+		Product product =
+				productJpaRepository.findById(productId,
+						EntityGraphUtils.fromAttributePaths("category", "vendor", "images"))
+					.orElseThrow(() -> new IllegalArgumentException("Invalid Product ID."));
+		
+		return new FrontStoreProductDisplay(
+				product.getId(),
+				product.getCategory().getName(),
+				product.getVendor().getName(),
+				product.getName(),
+				product.getDescription(),
+				product.isTaxable() ?
+					product.getUnitPrice() + (product.getUnitPrice() * salesTaxRate) :
+						product.getUnitPrice(),
+				product.getUnitsInStock() > 0,
+				product.getImages()
+					   .parallelStream()
+					   .map(image -> image.getFileName().toString())
+					   .collect(Collectors.toList()));
 	}
 
 }
