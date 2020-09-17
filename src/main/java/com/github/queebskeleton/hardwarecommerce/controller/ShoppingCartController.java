@@ -25,4 +25,11 @@ public class ShoppingCartController {
 		return "redirect:/store";
 	}
 	
+	@GetMapping("/remove")
+	public String removeFromCart(Long productId) {
+		shoppingCart.removeItem(productId);
+		
+		return "redirect:/store";
+	}
+	
 }
