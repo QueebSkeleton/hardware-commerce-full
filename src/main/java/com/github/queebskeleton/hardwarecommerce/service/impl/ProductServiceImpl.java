@@ -12,6 +12,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraphUtils;
 import com.github.queebskeleton.hardwarecommerce.dto.AdminProductAddForm;
 import com.github.queebskeleton.hardwarecommerce.dto.EntityImage;
 import com.github.queebskeleton.hardwarecommerce.dto.FrontStorePagination;
@@ -38,12 +39,14 @@ public class ProductServiceImpl implements ProductService {
 	public Page<Product> getProductPage(Pageable pageable, String search) {
 		
 		Page<Product> productPage = (search == null) ?
-				productJpaRepository.findAll(pageable) :
+				productJpaRepository.findAll(pageable, EntityGraphUtils.fromAttributePaths("category", "vendor")) :
 					productJpaRepository.findAll(
 							Specification.where(ProductSpecs.nameContainsIgnoreCase(search))
 							.or(ProductSpecs.categoryNameContainsIgnoreCase(search))
 							.or(ProductSpecs.unitsInStockContains(search))
-							.or(ProductSpecs.unitPriceContains(search)), pageable);
+							.or(ProductSpecs.unitPriceContains(search)),
+							pageable,
+							EntityGraphUtils.fromAttributePaths("category", "vendor"));
 				
 		productPage.getContent().forEach(product -> product.setImages(new ArrayList<>()));
 		
