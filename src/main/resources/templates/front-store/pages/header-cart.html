@@ -7,7 +7,7 @@
     <div class="cart-list">
       <div th:each="item : *{items}" th:object="${item}" class="product-widget">
         <div class="product-img">
-          <img th:src="*{productImagePath != null} ?: @{/images/product?id=} + *{productImagePath}" alt="">
+          <img th:if="*{productImagePath != null}" th:src="@{/images/product?id=} + *{productImagePath}" alt="">
         </div>
         <div class="product-body">
           <h3 class="product-name">
@@ -15,8 +15,8 @@
           </h3>
           <h4 class="product-price">
             <span class="qty" th:text="*{quantity} + 'x'">1x</span>
-            <span th:text="'Php' + ${#numbers.formatDecimal(item.taxedUnitPrice, 1, 2)}">Php0.00</span> ->
-            <span th:text="'Php' + ${#numbers.formatDecimal(item.getSubtotal(), 1, 2)}">Php0.00</span>
+            <span th:text="'Php' + ${#numbers.formatDecimal(item.taxedUnitPrice, 1, 2)}">Php0.00</span><br>
+            <span th:text="'= Php' + ${#numbers.formatDecimal(item.getSubtotal(), 1, 2)}">Php0.00</span>
           </h4>
         </div>
         <button class="delete">
