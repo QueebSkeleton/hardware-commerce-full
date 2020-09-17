@@ -26,6 +26,8 @@ public class OrderItem {
 	@ManyToOne
 	private Product product;
 	
+	private boolean isTaxed;
+	
 	private double unitPrice;
 	
 	private int quantity;

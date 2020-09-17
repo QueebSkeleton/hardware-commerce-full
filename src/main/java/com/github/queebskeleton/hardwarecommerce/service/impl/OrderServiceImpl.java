@@ -3,6 +3,7 @@ package com.github.queebskeleton.hardwarecommerce.service.impl;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -11,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraphUtils;
 import com.github.queebskeleton.hardwarecommerce.dto.AdminCustomOrderForm;
+import com.github.queebskeleton.hardwarecommerce.dto.OrderInvoice;
 import com.github.queebskeleton.hardwarecommerce.entity.Order;
 import com.github.queebskeleton.hardwarecommerce.entity.OrderItem;
 import com.github.queebskeleton.hardwarecommerce.entity.Product;
@@ -26,6 +28,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Service
 public class OrderServiceImpl implements OrderService {
+	
+	@Value("${general.settings.sales-tax-rate}")
+	private double salesTaxRate;
 
 	private final UserJpaRepository userJpaRepository;
 	private final ProductJpaRepository productJpaRepository;
@@ -49,6 +54,13 @@ public class OrderServiceImpl implements OrderService {
 				EntityGraphUtils.fromAttributePaths("placedBy"));
 		
 	}
+	
+	@Override
+	public OrderInvoice getOrderInvoiceByOrderId(Long id) {
+		return OrderInvoice.fromOrderEntity(orderJpaRepository.findById(id,
+				EntityGraphUtils.fromAttributePaths("placedBy", "orderItems", "orderItems.product"))
+			.orElseThrow(() -> new IllegalArgumentException("Invalid Order ID.")));
+	}
 
 	@Override
 	@Transactional
@@ -60,6 +72,7 @@ public class OrderServiceImpl implements OrderService {
 					.orElseThrow(() -> new IllegalArgumentException("Invalid User ID.")));
 		order.setPlacedOn(orderForm.getPlacedOn());
 		order.setStatus(orderForm.getStatus());
+		order.setSalesTaxRate(salesTaxRate);
 		
 		Map<Long, Product> products = 
 				productJpaRepository.findAllById(
@@ -83,6 +96,7 @@ public class OrderServiceImpl implements OrderService {
 									 null,
 									 order,
 									 product,
+									 product.isTaxable(),
 									 product.getUnitPrice(),
 									 orderItemForm.getQuantity());
 							 return orderItem;

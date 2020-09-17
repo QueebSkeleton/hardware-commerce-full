@@ -45,5 +45,7 @@ public class Order {
 	
 	@OneToMany(mappedBy = "order", cascade = { CascadeType.REMOVE })
 	private List<OrderItem> orderItems;
+	
+	private double salesTaxRate;
 
 }

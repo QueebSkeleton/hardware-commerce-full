@@ -40,6 +40,13 @@ public class OrderManagementController {
 		return "admin/pages/order-mgmt/table";
 	}
 	
+	@GetMapping("/invoice")
+	public String invoice(Long id, Model model) {
+		model.addAttribute("invoice", orderService.getOrderInvoiceByOrderId(id));
+		
+		return "admin/pages/order-mgmt/invoice";
+	}
+	
 	@DeleteMapping("/delete")
 	public @ResponseBody ResponseEntity<Void> deleteById(@RequestParam Long id) {
 		orderService.deleteOrderById(id);
