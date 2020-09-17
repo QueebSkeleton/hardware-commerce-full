@@ -30,9 +30,9 @@
           </div>
         </div>
         <div class="add-to-cart">
-          <button class="add-to-cart-btn">
-            <i class="fa fa-shopping-cart"></i> Add To Cart
-          </button>
+          <a th:href="@{/product?id=} + *{id}" class="add-to-cart-btn">
+            <i class="fa fa-eye"></i> View
+          </a>
         </div>
       </div>
     </div>

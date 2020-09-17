@@ -1,11 +1,13 @@
 package com.github.queebskeleton.hardwarecommerce.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -17,6 +19,7 @@ public class ShoppingCart {
 	
 	@Data
 	@NoArgsConstructor
+	@AllArgsConstructor
 	public static class Item {
 		
 		private Long productId;
@@ -34,11 +37,15 @@ public class ShoppingCart {
 	private List<Item> items;
 	
 	public void addItem(Item item) {
+		if(items == null)
+			items = new ArrayList<>();
+		
 		items.add(item);
 	}
 	
 	public void removeItem(Long productId) {
-		items.removeIf(item -> item.getProductId() == productId);
+		if(items != null)
+			items.removeIf(item -> item.getProductId() == productId);
 	}
 	
 	public int getTotalQuantity() {
