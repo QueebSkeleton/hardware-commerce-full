@@ -77,7 +77,8 @@
         <div class="col-md-5">
           <form action="cart/add">
             <div class="product-details">
-              <input type="hidden" name="productId" th:value="*{productId}">
+              <input type="hidden" name="productId"
+                th:value="*{productId}">
               <h2 class="product-name" th:text="*{productName}">product
                 name goes here</h2>
               <div>
@@ -107,8 +108,9 @@
                 <div class="qty-label">
                   Qty
                   <div class="input-number">
-                    <input type="number" name="quantity" value="1"> <span
-                      class="qty-up">+</span> <span class="qty-down">-</span>
+                    <input type="number" name="quantity"
+                      th:value="${@shoppingCart.itemExists(productDisplay.productId)} ? ${@shoppingCart.getItemByProductId(productDisplay.productId).quantity} : 1">
+                    <span class="qty-up">+</span> <span class="qty-down">-</span>
                   </div>
                 </div>
                 <button type="submit" class="add-to-cart-btn">
