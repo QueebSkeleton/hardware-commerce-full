@@ -13,9 +13,7 @@ import com.github.queebskeleton.hardwarecommerce.entity.Product;
 import com.github.queebskeleton.hardwarecommerce.repository.ProductJpaRepository;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 // TODO: Probably abstract away this class, since this implementation is Spring-reliant
 @Component
@@ -27,8 +25,7 @@ public class ShoppingCart {
 	
 	private final ProductJpaRepository productJpaRepository;
 	
-	@Data
-	@NoArgsConstructor
+	@Getter
 	@AllArgsConstructor
 	public static class Item {
 		
@@ -37,6 +34,10 @@ public class ShoppingCart {
 		private String productImagePath;
 		private int quantity;
 		private double taxedUnitPrice;
+		
+		private void setQuantity(int quantity) {
+			this.quantity = quantity;
+		}
 		
 		public double getSubtotal() {
 			return quantity * taxedUnitPrice;

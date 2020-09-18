@@ -29,8 +29,11 @@
       <h5>SUBTOTAL: <span th:text="'Php' + ${#numbers.formatDecimal(session.shoppingCart.getSubtotal(), 1, 2)}">Php0.00</span></h5>
     </div>
     <div class="cart-btns">
-      <a href="#">View Cart</a> <a href="#">Checkout <i
-        class="fa fa-arrow-circle-right"></i></a>
+      <a href="#">View Cart</a>
+      <a th:href="@{/checkout}">
+        Checkout
+        <i class="fa fa-arrow-circle-right"></i>
+      </a>
     </div>
   </div>
 </div>

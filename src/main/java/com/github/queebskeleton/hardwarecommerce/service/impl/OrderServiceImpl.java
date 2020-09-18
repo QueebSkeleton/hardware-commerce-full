@@ -1,5 +1,6 @@
 package com.github.queebskeleton.hardwarecommerce.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -12,11 +13,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraphUtils;
 import com.github.queebskeleton.hardwarecommerce.dto.AdminCustomOrderForm;
+import com.github.queebskeleton.hardwarecommerce.dto.BillingAddress;
 import com.github.queebskeleton.hardwarecommerce.dto.OrderInvoice;
 import com.github.queebskeleton.hardwarecommerce.entity.Order;
 import com.github.queebskeleton.hardwarecommerce.entity.OrderItem;
 import com.github.queebskeleton.hardwarecommerce.entity.Product;
+import com.github.queebskeleton.hardwarecommerce.entity.User;
 import com.github.queebskeleton.hardwarecommerce.entity.spec.OrderSpecs;
+import com.github.queebskeleton.hardwarecommerce.model.ShoppingCart;
 import com.github.queebskeleton.hardwarecommerce.repository.OrderItemJpaRepository;
 import com.github.queebskeleton.hardwarecommerce.repository.OrderJpaRepository;
 import com.github.queebskeleton.hardwarecommerce.repository.ProductJpaRepository;
@@ -108,6 +112,57 @@ public class OrderServiceImpl implements OrderService {
 		// Persist Order Items
 		orderItemJpaRepository.saveAll(order.getOrderItems());
 		
+	}
+
+	@Override
+	@Transactional
+	public void placeOrder(BillingAddress billingAddress, ShoppingCart shoppingCart) {
+		User user = new User(
+				null,
+				User.Type.CUSTOMER,
+				billingAddress.getFirstName(),
+				billingAddress.getLastName(),
+				billingAddress.getEmailAddress(),
+				billingAddress.getContactNumber(),
+				billingAddress.getUsername(),
+				billingAddress.getPassword());
+		
+		user = userJpaRepository.save(user);
+		
+		Map<Long, Product> products = 
+				productJpaRepository.findAllById(
+						shoppingCart.getItems()
+							 .parallelStream()
+							 .mapToLong(item -> item.getProductId())
+							 .boxed()
+							 .collect(Collectors.toList()))
+					.parallelStream()
+					.collect(
+							Collectors.toMap(
+									product -> product.getId(),
+									product -> product));
+		
+		Order order = new Order();
+		order.setPlacedBy(user);
+		order.setPlacedOn(LocalDateTime.now());
+		order.setStatus(Order.Status.PENDING);
+		order.setOrderItems(
+			shoppingCart.getItems()
+				.parallelStream()
+				.map(item ->  {
+					Product product = products.get(item.getProductId());
+					return new OrderItem(
+						null,
+						order,
+						product,
+						product.isTaxable(),
+						product.getUnitPrice(),
+						item.getQuantity()); })
+				.collect(Collectors.toList()));
+		order.setSalesTaxRate(salesTaxRate);
+		
+		orderJpaRepository.save(order);
+		orderItemJpaRepository.saveAll(order.getOrderItems());
 	}
 
 	@Override
