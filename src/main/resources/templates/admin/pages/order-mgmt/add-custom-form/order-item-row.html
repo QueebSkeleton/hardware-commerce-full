@@ -1,0 +1,16 @@
+<tr xmlns:th="https://thymeleaf.org" th:object="${product}" th:data-product-id="*{id}">
+  <td class="name-column" th:text="*{name}"></td>
+  <td class="unit-price-column" th:data-unit-price="*{unitPrice}" th:text="'P' + *{unitPrice}"></td>
+  <td class="quantity-column">
+    <input type="number" th:name="'orderItems[' + ${itemIndex} +'].quantity'" class="form-control form-control-sm" value="1" min="1">
+  </td>
+  <td class="subtotal-column">
+    <input type="number" name="subtotal" class="form-control form-control-sm" th:value="*{unitPrice}" readonly>
+  </td>
+  <td class="remove-column text-center">
+    <input type="hidden" th:name="'orderItems[' + ${itemIndex} +'].productId'" th:value="*{id}">
+    <button type="button" class="btn btn-sm btn-danger btn-delete-item">
+      <i class="fas fa-trash"></i>
+    </button>
+  </td>
+</tr>

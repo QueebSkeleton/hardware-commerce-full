@@ -1,0 +1,21 @@
+
+general:
+  settings:
+    sales-tax-rate: 0.12
+    delivery-fee-php: 50.00
+
+spring:
+  
+  datasource:
+    url: jdbc:h2:mem:hardware_commerce_db
+    driver-class-name: org.h2.Driver
+    username: sa
+    
+  h2:
+    console:
+      enabled: true
+      
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: create-drop

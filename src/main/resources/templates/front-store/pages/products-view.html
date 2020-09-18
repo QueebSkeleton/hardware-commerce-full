@@ -1,0 +1,60 @@
+<th:block xmlns:th="https://thymeleaf.org">
+  
+  <div class="row" id="store-products">
+    <div th:each="product : ${productPage}" th:object="${product}" class="col-md-4 col-xs-6">
+      <div class="product">
+        <div class="product-img">
+          <th:block th:unless="*{images.isEmpty()}">
+            <img th:src="@{/images/product?id=} + *{images.get(0).fileName}">
+          </th:block>
+          <h5 th:if="*{images.isEmpty()}" class="text-center" style="height: 150px; line-height: 150px;">No Image Available</h5>
+        </div>
+        <div class="product-body">
+          <p class="product-category" th:text="*{category.name}">Category</p>
+          <h3 class="product-name">
+            <a href="#" th:text="*{name}"></a>
+          </h3>
+          <h4 class="product-price" th:text="'P' + *{unitPrice}"></h4>
+          <div class="product-rating"></div>
+          <div class="product-btns">
+            <button class="add-to-wishlist">
+              <i class="fa fa-heart-o"></i><span
+                class="tooltipp">Add to Wishlist</span>
+            </button>
+            <button class="add-to-compare">
+              <i class="fa fa-exchange"></i><span
+                class="tooltipp">Add to Compare</span>
+            </button>
+            <button class="quick-view">
+              <i class="fa fa-eye"></i><span class="tooltipp">Quick View</span>
+            </button>
+          </div>
+        </div>
+        <div class="add-to-cart">
+          <a th:href="@{/product?id=} + *{id}" class="add-to-cart-btn">
+            <i class="fa fa-eye"></i> View
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="store-filter clearfix" id="store-filter">
+    <span class="store-qty" th:unless="${productPage.isEmpty()}">
+      Page [[${productPage.getPageable().getPageNumber() + 1}]] of [[${productPage.getTotalPages()}]]
+    </span>
+    <ul class="store-pagination">
+      <li class="prev-page" th:classappend="${productPage.isEmpty() or productPage.getPageable().getPageNumber() == 0} ? 'disabled'"><a href="javascript:void(0)"><i class="fa fa-angle-left"></i></a></li>
+      <th:block th:if="${productPage.getTotalPages() != 0}">
+        <li class="page-number"
+          th:each="pageNumber : ${#numbers.sequence(0, productPage.getTotalPages() - 1)}"
+          th:classappend="${productPage.getPageable().getPageNumber() == pageNumber} ? ' active'"
+          th:data-page-number="${pageNumber}">
+          <a href="javascript:void(0)" th:text="${pageNumber + 1}">1</a>
+        </li>
+      </th:block>
+      <li class="next-page" th:classappend="${productPage.isEmpty() or productPage.getPageable().getPageNumber() == productPage.getTotalPages() - 1} ? 'disabled'"><a href="javascript:void(0)"><i class="fa fa-angle-right"></i></a></li>
+    </ul>
+  </div>
+  
+</th:block>

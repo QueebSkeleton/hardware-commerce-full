@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://thymeleaf.org">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+  <title>H-Commerce | Manage Orders</title>
+
+  <th:block th:replace="~{admin/fragments/common-links :: cssLinks}"></th:block>
+  
+  <!-- SweetAlert2 CSS -->
+  <link rel="stylesheet" th:href="@{/adminlte/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css}">
+  
+</head>
+
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+  
+  <!--/* Insert topbar fragment */-->
+  <nav th:replace="~{admin/fragments/navs :: topbar}"></nav>
+
+  <!--/* Insert sidebar fragment */-->
+  <aside th:replace="~{admin/fragments/navs :: sidebar}"></aside>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0 text-dark">Manage Orders</h1>
+          </div><!-- /.col -->
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a th:href="@{/admin/dashboard}">Dashboard</a></li>
+              <li class="breadcrumb-item active">Manage Orders</li>
+              <li class="breadcrumb-item"><a th:href="@{/admin/orders/add-custom-form}">Add</a>
+            </ol>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <div class="content">
+      <div class="container-fluid">
+      
+        <div class="row">
+          
+          <div class="col-12">
+            
+            <div class="card" id="order-table-card">
+            
+              <div class="card-header p-2">
+                <div class="row px-2">
+                  <div class="col-sm-6 mb-2 mb-sm-0">
+                    <h3 class="card-title pt-1">
+                      <i class="fas fa-table"></i>
+                      Orders Table
+                    </h3>
+                  </div>
+            
+                  <div class="row col-sm-6">
+                    <div class="col-sm-4 d-xs-none"></div>
+                    <div class="col-6 col-sm-4 input-group input-group-sm mb-xs-2">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fas fa-eye"></i></span>
+                      </div>
+                      <select name="pageSize" class="form-control float-right h-100">
+                        <option value="1">1</option>
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="50">50</option>
+                      </select>
+                    </div>
+                    <div class="col-6 col-sm-4 input-group input-group-sm">
+                      <input type="text" name="search" class="form-control float-right h-100" placeholder="Search" th:value="${param.search}">
+              
+                      <div class="input-group-append">
+                        <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="card-content">
+              
+              </div>
+            
+            </div>
+            
+          </div>
+          
+        </div>
+        
+      </div>
+      <!-- /.container-fluid -->
+    </div>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+  <!-- Control Sidebar -->
+  <aside th:replace="~{admin/fragments/parts :: controlSidebar}"></aside>
+
+  <!-- Main Footer -->
+  <footer th:replace="~{admin/fragments/parts :: mainFooter}"></footer>
+  
+</div>
+<!-- ./wrapper -->
+
+<!-- Add / Update Modal -->
+<div class="modal fade" id="add-update-modal" aria-modal="true">
+  <div class="modal-dialog">
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+<!-- Delete Modal -->
+<div class="modal fade" id="delete-modal" aria-modal="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">
+          <i class="fas fa-times-circle text-danger"></i>
+          Delete...
+        </h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p class="message">
+          You are about to delete Order: <b id="order-info"></b>.
+          Are you sure you want to proceed with this operation?
+        </p>
+      </div>
+      <div class="modal-footer justify-content-between">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">I change my mind...</button>
+        <a href="javascript:void(0)" class="btn btn-danger" id="confirm-delete-link">Delete</a>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+<!-- REQUIRED SCRIPTS -->
+<th:block th:replace="~{admin/fragments/common-links :: jsLinks}"></th:block>
+
+<!-- SweetAlert2 JS -->
+<script th:src="@{/adminlte/plugins/sweetalert2/sweetalert2.min.js}"></script>
+<script th:src="@{/adminlte/dist/js/sweetalert2-genericcrud.js}"></script>
+
+<!-- (Local) Page Utils JS -->
+<script th:src="@{/adminlte/dist/js/page-utils.js}"></script>
+<!-- (Local) Card Based Pageable Table Script -->
+<script th:src="@{/adminlte/dist/js/pageabletable.js}"></script>
+<!-- (Local) Order Management Panel Script -->
+<script th:src="@{/adminlte/dist/js/pages/order-mgmt.js}"></script>
+
+</body>
+</html>
