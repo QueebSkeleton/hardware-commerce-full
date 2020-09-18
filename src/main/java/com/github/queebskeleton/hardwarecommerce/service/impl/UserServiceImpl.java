@@ -64,6 +64,8 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	public void saveAdministrator(User administrator) {
+		addressJpaRepository.save(administrator.getAddress());
+		
 		administrator.setType(User.Type.ADMINISTRATOR);
 		userJpaRepository.save(administrator);
 	}
