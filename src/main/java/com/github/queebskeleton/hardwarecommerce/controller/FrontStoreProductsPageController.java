@@ -15,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Controller
-public class FrontStoreController {
+public class FrontStoreProductsPageController {
 	
 	private final CategoryService categoryService;
 	private final VendorService vendorService;
