@@ -6,6 +6,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,6 +31,9 @@ public class User {
 	private String firstName;
 	
 	private String lastName;
+	
+	@OneToOne
+	private Address address;
 	
 	private String emailAddress;
 	
