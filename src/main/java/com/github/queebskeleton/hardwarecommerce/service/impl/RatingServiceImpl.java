@@ -1,11 +1,15 @@
 package com.github.queebskeleton.hardwarecommerce.service.impl;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraphUtils;
 import com.github.queebskeleton.hardwarecommerce.dto.FrontStoreRatingForm;
 import com.github.queebskeleton.hardwarecommerce.entity.Rater;
 import com.github.queebskeleton.hardwarecommerce.entity.Rating;
+import com.github.queebskeleton.hardwarecommerce.entity.spec.RatingSpecs;
 import com.github.queebskeleton.hardwarecommerce.repository.ProductJpaRepository;
 import com.github.queebskeleton.hardwarecommerce.repository.RaterJpaRepository;
 import com.github.queebskeleton.hardwarecommerce.repository.RatingJpaRepository;
@@ -20,6 +24,13 @@ public class RatingServiceImpl implements RatingService {
 	private final ProductJpaRepository productJpaRepository;
 	private final RaterJpaRepository raterJpaRepository;
 	private final RatingJpaRepository ratingJpaRepository;
+
+	@Override
+	public List<Rating> getAllRatingsByProductId(Long productId) {
+		return ratingJpaRepository.findAll(
+				RatingSpecs.productIdEquals(productId),
+				EntityGraphUtils.fromAttributePaths("rater"));
+	}
 	
 	@Override
 	@Transactional

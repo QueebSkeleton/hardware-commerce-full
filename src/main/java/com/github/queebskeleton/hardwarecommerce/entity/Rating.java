@@ -24,6 +24,6 @@ public class Rating {
 	
 	private String review;
 	
-	private byte value;
+	private int value;
 	
 }
