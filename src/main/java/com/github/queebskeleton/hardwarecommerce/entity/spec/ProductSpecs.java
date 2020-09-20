@@ -1,5 +1,6 @@
 package com.github.queebskeleton.hardwarecommerce.entity.spec;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.persistence.criteria.Join;
@@ -56,6 +57,12 @@ public class ProductSpecs {
 	public static Specification<Product> unitPriceBetween(double min, double max) {
 		return (root, query, criteriaBuilder) -> {
 			return criteriaBuilder.between(root.get("unitPrice"), min, max);
+		};
+	}
+	
+	public static Specification<Product> addedOnGreaterThan(LocalDateTime addedOn) {
+		return (root, query, builder) -> {
+			return builder.greaterThan(root.get("addedOn"), addedOn);
 		};
 	}
 

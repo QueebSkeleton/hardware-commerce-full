@@ -15,12 +15,14 @@ import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraphUtils;
 import com.github.queebskeleton.hardwarecommerce.dto.AdminCustomOrderForm;
 import com.github.queebskeleton.hardwarecommerce.dto.BillingAddress;
 import com.github.queebskeleton.hardwarecommerce.dto.OrderInvoice;
+import com.github.queebskeleton.hardwarecommerce.entity.Address;
 import com.github.queebskeleton.hardwarecommerce.entity.Order;
 import com.github.queebskeleton.hardwarecommerce.entity.OrderItem;
 import com.github.queebskeleton.hardwarecommerce.entity.Product;
 import com.github.queebskeleton.hardwarecommerce.entity.User;
 import com.github.queebskeleton.hardwarecommerce.entity.spec.OrderSpecs;
 import com.github.queebskeleton.hardwarecommerce.model.ShoppingCart;
+import com.github.queebskeleton.hardwarecommerce.repository.AddressJpaRepository;
 import com.github.queebskeleton.hardwarecommerce.repository.OrderItemJpaRepository;
 import com.github.queebskeleton.hardwarecommerce.repository.OrderJpaRepository;
 import com.github.queebskeleton.hardwarecommerce.repository.ProductJpaRepository;
@@ -36,6 +38,7 @@ public class OrderServiceImpl implements OrderService {
 	@Value("${general.settings.sales-tax-rate}")
 	private double salesTaxRate;
 
+	private final AddressJpaRepository addressJpaRepository;
 	private final UserJpaRepository userJpaRepository;
 	private final ProductJpaRepository productJpaRepository;
 	private final OrderJpaRepository orderJpaRepository;
@@ -122,12 +125,18 @@ public class OrderServiceImpl implements OrderService {
 				User.Type.CUSTOMER,
 				billingAddress.getFirstName(),
 				billingAddress.getLastName(),
+				new Address(
+						null,
+						billingAddress.getAddress(),
+						billingAddress.getCity(),
+						billingAddress.getZipCode()),
 				billingAddress.getEmailAddress(),
 				billingAddress.getContactNumber(),
 				billingAddress.getUsername(),
 				billingAddress.getPassword());
 		
-		user = userJpaRepository.save(user);
+		addressJpaRepository.save(user.getAddress());
+		userJpaRepository.save(user);
 		
 		Map<Long, Product> products = 
 				productJpaRepository.findAllById(

@@ -1,6 +1,7 @@
 package com.github.queebskeleton.hardwarecommerce.service.impl;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -8,6 +9,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -80,6 +82,71 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
+	public List<Product> getTopSellingProducts() {
+		// TODO: Find cleaner Java8 Stream approach to initializing images of products
+		// using 1+1 query
+		List<Product> productList =
+				productJpaRepository.findTopSaledProducts(
+						PageRequest.of(0, 5));
+		
+		productList.forEach(product -> product.setImages(new ArrayList<>()));
+		
+		Map<Long, Product> productsMap =
+				productList.parallelStream()
+						.collect(
+							Collectors.toMap(
+									product -> product.getId(),
+									product -> product));
+		
+		productImageJpaRepository
+				.findByProduct_IdInFetchProduct(
+						productList.parallelStream()
+							.mapToLong(product -> product.getId())
+							.boxed()
+							.collect(Collectors.toList()))
+				.forEach(productImage ->
+						productsMap.get(productImage.getProduct().getId())
+								.getImages()
+								.add(productImage));
+		
+		return productList;
+	}
+
+	@Override
+	public List<Product> getNewProducts() {
+		// TODO: Find cleaner Java8 Stream approach to initializing images of products
+		// using 1+1 query
+		
+		// Get products added ONE MONTH AGO, LIMIT 10
+		Page<Product> productPage =
+				productJpaRepository.findAll(
+						ProductSpecs.addedOnGreaterThan(LocalDateTime.now().minusMonths(1)),
+						PageRequest.of(0, 10));
+		
+		productPage.get().forEach(product -> product.setImages(new ArrayList<>()));
+		
+		Map<Long, Product> productsMap =
+				productPage.get()
+						.collect(
+							Collectors.toMap(
+									product -> product.getId(),
+									product -> product));
+		
+		productImageJpaRepository
+				.findByProduct_IdInFetchProduct(
+						productPage.get()
+							.mapToLong(product -> product.getId())
+							.boxed()
+							.collect(Collectors.toList()))
+				.forEach(productImage ->
+						productsMap.get(productImage.getProduct().getId())
+								.getImages()
+								.add(productImage));
+		
+		return productPage.getContent();
+	}
+
+	@Override
 	@Transactional
 	public void addProduct(AdminProductAddForm addForm) {
 		
@@ -90,6 +157,7 @@ public class ProductServiceImpl implements ProductService {
 				addForm.getVendor(),
 				addForm.getName(),
 				addForm.getDescription(),
+				LocalDateTime.now(),
 				addForm.getBarcode(),
 				addForm.getStockKeepingUnit(),
 				addForm.getInitialStock(),
