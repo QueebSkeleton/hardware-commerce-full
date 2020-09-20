@@ -1,6 +1,7 @@
 package com.github.queebskeleton.hardwarecommerce.service.impl;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -128,6 +129,7 @@ public class ProductServiceImpl implements ProductService {
 				addForm.getVendor(),
 				addForm.getName(),
 				addForm.getDescription(),
+				LocalDateTime.now(),
 				addForm.getBarcode(),
 				addForm.getStockKeepingUnit(),
 				addForm.getInitialStock(),

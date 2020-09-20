@@ -1,5 +1,6 @@
 package com.github.queebskeleton.hardwarecommerce.entity;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -33,6 +34,8 @@ public class Product {
 	private String name;
 	
 	private String description;
+	
+	private LocalDateTime addedOn;
 	
 	private String barcode;
 	
