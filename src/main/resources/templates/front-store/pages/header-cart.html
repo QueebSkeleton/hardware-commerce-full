@@ -26,7 +26,7 @@
     </div>
     <div class="cart-summary">
       <small th:text="*{getTotalQuantity()}">3</small><small> Item(s) selected</small>
-      <h5>SUBTOTAL: <span th:text="'Php' + ${#numbers.formatDecimal(session.shoppingCart.getSubtotal(), 1, 2)}">Php0.00</span></h5>
+      <h5>SUBTOTAL: <span th:text="'Php' + ${#numbers.formatDecimal(@shoppingCart.getSubtotal(), 1, 2)}">Php0.00</span></h5>
     </div>
     <div class="cart-btns">
       <a href="#">View Cart</a>
