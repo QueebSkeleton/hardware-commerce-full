@@ -7,6 +7,7 @@
           <th:block th:unless="*{images.isEmpty()}">
             <img th:src="@{/images/product?id=} + *{images.get(0).fileName}">
           </th:block>
+          <h5 th:if="*{images.isEmpty()}" class="text-center" style="height: 150px; line-height: 150px;">No Image Available</h5>
         </div>
         <div class="product-body">
           <p class="product-category" th:text="*{category.name}">Category</p>
@@ -30,9 +31,9 @@
           </div>
         </div>
         <div class="add-to-cart">
-          <button class="add-to-cart-btn">
-            <i class="fa fa-shopping-cart"></i> Add To Cart
-          </button>
+          <a th:href="@{/product?id=} + *{id}" class="add-to-cart-btn">
+            <i class="fa fa-eye"></i> View
+          </a>
         </div>
       </div>
     </div>

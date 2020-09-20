@@ -1,15 +1,10 @@
 package com.github.queebskeleton.hardwarecommerce.entity;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,35 +14,22 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Product {
+public class OrderItem {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	@ManyToOne
-	private Category category;
+	private Order order;
 	
 	@ManyToOne
-	private Vendor vendor;
+	private Product product;
 	
-	private String name;
-	
-	private String description;
-	
-	private LocalDateTime addedOn;
-	
-	private String barcode;
-	
-	private String stockKeepingUnit;
-	
-	private int unitsInStock;
+	private boolean isTaxed;
 	
 	private double unitPrice;
 	
-	private boolean isTaxable;
-	
-	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-	private List<ProductImage> images;
+	private int quantity;
 
 }

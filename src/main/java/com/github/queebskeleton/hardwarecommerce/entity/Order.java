@@ -5,49 +5,47 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
-public class Product {
+@Table(name = "hardware_order")
+public class Order {
+	
+	public static enum Status {
+		PENDING,
+		PROCESSING,
+		DELIVERED,
+		DENIED,
+		CANCELLED;
+	}
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	@ManyToOne
-	private Category category;
+	private User placedBy;
 	
-	@ManyToOne
-	private Vendor vendor;
+	private LocalDateTime placedOn;
 	
-	private String name;
+	@Enumerated(EnumType.STRING)
+	private Status status;
 	
-	private String description;
+	@OneToMany(mappedBy = "order", cascade = { CascadeType.REMOVE })
+	private List<OrderItem> orderItems;
 	
-	private LocalDateTime addedOn;
-	
-	private String barcode;
-	
-	private String stockKeepingUnit;
-	
-	private int unitsInStock;
-	
-	private double unitPrice;
-	
-	private boolean isTaxable;
-	
-	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-	private List<ProductImage> images;
+	private double salesTaxRate;
 
 }

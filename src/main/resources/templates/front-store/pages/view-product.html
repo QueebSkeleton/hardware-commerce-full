@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+<title>Welcome to H-Commerce!</title>
+
+<!-- CSS Plugins -->
+<th:block
+  th:replace="~{front-store/fragments/common-links :: cssPlugins}"></th:block>
+
+</head>
+<body>
+  <!-- HEADER -->
+  <header th:replace="~{front-store/fragments/parts :: header}"></header>
+  <!-- /HEADER -->
+
+  <!-- NAVIGATION -->
+  <nav th:replace="~{front-store/fragments/parts :: navigation}"></nav>
+  <!-- /NAVIGATION -->
+
+  <!-- BREADCRUMB -->
+  <div id="breadcrumb" class="section">
+    <!-- container -->
+    <div class="container">
+      <!-- row -->
+      <div class="row">
+        <div class="col-md-12">
+          <ul class="breadcrumb-tree">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Not Yet Set</a></li>
+            <li><a href="#">Not Yet Set</a></li>
+            <li class="active">Not Yet Set</li>
+          </ul>
+        </div>
+      </div>
+      <!-- /row -->
+    </div>
+    <!-- /container -->
+  </div>
+  <!-- /BREADCRUMB -->
+
+  <!-- SECTION -->
+  <div class="section" th:object="${productDisplay}">
+    <!-- container -->
+    <div class="container">
+      <!-- row -->
+      <div class="row">
+        <!-- Product main img -->
+        <div class="col-md-5 col-md-push-2">
+          <div id="product-main-img">
+            <div th:each="imagePath : *{imagePaths}"
+              class="product-preview">
+              <img th:src="@{/images/product?id=} + ${imagePath}"
+                alt="Image of product">
+            </div>
+          </div>
+        </div>
+        <!-- /Product main img -->
+
+        <!-- Product thumb imgs -->
+        <div class="col-md-2  col-md-pull-5">
+          <div id="product-imgs">
+            <div th:each="imagePath : *{imagePaths}"
+              class="product-preview">
+              <img th:src="@{/images/product?id=} + ${imagePath}"
+                alt="Image of product">
+            </div>
+          </div>
+        </div>
+        <!-- /Product thumb imgs -->
+
+        <!-- Product details -->
+        <div class="col-md-5">
+          <form action="cart/add">
+            <div class="product-details">
+              <input type="hidden" name="productId"
+                th:value="*{productId}">
+              <h2 class="product-name" th:text="*{productName}">product
+                name goes here</h2>
+              <div>
+                <div class="product-rating">
+                  <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                  <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                  <i class="fa fa-star-o"></i>
+                </div>
+                <a class="review-link" href="#">0 Review(s) | Add
+                  your review</a>
+              </div>
+              <div>
+                <h3 class="product-price"
+                  th:text="'Php' + ${#numbers.formatDecimal(productDisplay.productUnitPriceTaxed, 1, 2)}">
+                  Php980.00</h3>
+                <span class="product-available"
+                  th:text="*{stocked ? 'In Stock' : 'No Stock'}">
+                  In Stock </span>
+              </div>
+              <p th:text="*{productDescription}">Lorem ipsum dolor
+                sit amet, consectetur adipisicing elit, sed do eiusmod
+                tempor incididunt ut labore et dolore magna aliqua. Ut
+                enim ad minim veniam, quis nostrud exercitation ullamco
+                laboris nisi ut aliquip ex ea commodo consequat.</p>
+
+              <div class="add-to-cart">
+                <div class="qty-label">
+                  Qty
+                  <div class="input-number">
+                    <input type="number" name="quantity"
+                      th:value="${@shoppingCart.itemExists(productDisplay.productId)} ? ${@shoppingCart.getItemByProductId(productDisplay.productId).quantity} : 1">
+                    <span class="qty-up">+</span> <span class="qty-down">-</span>
+                  </div>
+                </div>
+                <button type="submit" class="add-to-cart-btn">
+                  <i class="fa fa-shopping-cart"></i> add to cart
+                </button>
+              </div>
+
+              <ul class="product-btns">
+                <li><a href="#"><i class="fa fa-heart-o"></i>
+                    add to wishlist</a></li>
+                <li><a href="#"><i class="fa fa-exchange"></i>
+                    add to compare</a></li>
+              </ul>
+
+              <ul class="product-links">
+                <li>Category:</li>
+                <li><a href="#" th:text="*{categoryName}">Not
+                    Set</a></li>
+              </ul>
+
+              <ul class="product-links">
+                <li>Share:</li>
+                <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                <li><a href="#"><i class="fa fa-envelope"></i></a></li>
+              </ul>
+
+            </div>
+          </form>
+        </div>
+        <!-- /Product details -->
+
+        <!-- Product tab -->
+        <div class="col-md-12">
+          <div id="product-tab">
+            <!-- product tab nav -->
+            <ul class="tab-nav">
+              <li class="active"><a data-toggle="tab" href="#tab1">Description</a></li>
+              <li><a data-toggle="tab" href="#tab2">Details</a></li>
+              <li><a data-toggle="tab" href="#tab3">Reviews (<span th:text="${totalRatingCount}"></span>)</a></li>
+            </ul>
+            <!-- /product tab nav -->
+
+            <!-- product tab content -->
+            <div class="tab-content">
+              <!-- tab1  -->
+              <div id="tab1" class="tab-pane fade in active">
+                <div class="row">
+                  <div class="col-md-12">
+                    <p th:text="*{productDescription}">Lorem ipsum
+                      dolor sit amet, consectetur adipisicing elit, sed
+                      do eiusmod tempor incididunt ut labore et dolore
+                      magna aliqua. Ut enim ad minim veniam, quis
+                      nostrud exercitation ullamco laboris nisi ut
+                      aliquip ex ea commodo consequat. Duis aute irure
+                      dolor in reprehenderit in voluptate velit esse
+                      cillum dolore eu fugiat nulla pariatur. Excepteur
+                      sint occaecat cupidatat non proident, sunt in
+                      culpa qui officia deserunt mollit anim id est
+                      laborum.</p>
+                  </div>
+                </div>
+              </div>
+              <!-- /tab1  -->
+
+              <!-- tab2  -->
+              <div id="tab2" class="tab-pane fade in">
+                <div class="row">
+                  <div class="col-md-12">
+                    <p>Lorem ipsum dolor sit amet, consectetur
+                      adipisicing elit, sed do eiusmod tempor incididunt
+                      ut labore et dolore magna aliqua. Ut enim ad minim
+                      veniam, quis nostrud exercitation ullamco laboris
+                      nisi ut aliquip ex ea commodo consequat. Duis aute
+                      irure dolor in reprehenderit in voluptate velit
+                      esse cillum dolore eu fugiat nulla pariatur.
+                      Excepteur sint occaecat cupidatat non proident,
+                      sunt in culpa qui officia deserunt mollit anim id
+                      est laborum.</p>
+                  </div>
+                </div>
+              </div>
+              <!-- /tab2  -->
+
+              <!-- tab3  -->
+              <div id="tab3" class="tab-pane fade in">
+                <div class="row">
+                  <!-- Rating -->
+                  <div class="col-md-3">
+                    <div id="rating">
+                      <div class="rating-avg">
+                        <span>5.0</span>
+                        <div class="rating-stars">
+                          <i class="fa fa-star"></i> <i
+                            class="fa fa-star"></i> <i
+                            class="fa fa-star"></i> <i
+                            class="fa fa-star"></i> <i
+                            class="fa fa-star"></i>
+                        </div>
+                      </div>
+                      <ul class="rating">
+                        <li th:each="ratingValue : ${ratingSummaryMap.keySet()}">
+                          <div class="rating-stars">
+                            <i th:class="'fa fa-star' + ${ratingValue < 1 ? '-o' : ''}"></i>
+                            <i th:class="'fa fa-star' + ${ratingValue < 2 ? '-o' : ''}"></i>
+                            <i th:class="'fa fa-star' + ${ratingValue < 3 ? '-o' : ''}"></i>
+                            <i th:class="'fa fa-star' + ${ratingValue < 4 ? '-o' : ''}"></i>
+                            <i th:class="'fa fa-star' + ${ratingValue < 5 ? '-o' : ''}"></i>
+                          </div>
+                          <div class="rating-progress">
+                            <div th:if="${totalRatingCount > 0}"
+                              th:style="'width: ' + ${#numbers.formatDecimal(100.0 * ratingSummaryMap.get(ratingValue) / totalRatingCount, 1, 0)} + '%'"></div>
+                            <div th:unless="${ratingSummaryMap.get(ratingValue) != null}"
+                              style="width: 0%;"></div>
+                          </div> <span class="sum"
+                          th:text="${ratingSummaryMap.get(ratingValue) != null ? ratingSummaryMap.get(ratingValue) : 0}">1</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <!-- /Rating -->
+
+                  <!-- Reviews -->
+                  <div class="col-md-6">
+                    <div id="reviews">
+                      <ul class="reviews">
+                        <li th:each="rating : ${ratingList}" th:object="${rating}">
+                          <div class="review-heading">
+                            <h5 class="name" th:text="*{rater.name}">John</h5>
+                            <p class="date">27 DEC 2018, 8:0 PM</p>
+                            <div class="review-rating">
+                              <i th:class="'fa fa-star' + *{value < 1 ? '-o' : ''}"></i>
+                              <i th:class="'fa fa-star' + *{value < 2 ? '-o' : ''}"></i>
+                              <i th:class="'fa fa-star' + *{value < 3 ? '-o' : ''}"></i>
+                              <i th:class="'fa fa-star' + *{value < 4 ? '-o' : ''}"></i>
+                              <i th:class="'fa fa-star' + *{value < 5 ? '-o' : ''}"></i>
+                            </div>
+                          </div>
+                          <div class="review-body">
+                            <p th:text="*{review}">Lorem ipsum
+                              dolor sit amet, consectetur adipisicing
+                              elit, sed do eiusmod tempor incididunt
+                              ut labore et dolore magna aliqua</p>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <!-- /Reviews -->
+
+                  <!-- Review Form -->
+                  <div class="col-md-3">
+                    <div id="review-form">
+                      <form class="review-form" method="POST"
+                        th:action="@{/rate}">
+                        <input type="hidden" name="productId"
+                          th:value="*{productId}"> <input
+                          class="input" type="text" name="raterName"
+                          placeholder="Your Name"> <input
+                          class="input" type="email"
+                          name="raterEmailAddress"
+                          placeholder="Your Email">
+                        <textarea class="input" name="review"
+                          placeholder="Your Review"></textarea>
+                        <div class="input-rating">
+                          <span>Your Rating: </span>
+                          <div class="stars">
+                            <input id="star5" name="value" value="5"
+                              type="radio"><label for="star5"></label>
+                            <input id="star4" name="value" value="4"
+                              type="radio"><label for="star4"></label>
+                            <input id="star3" name="value" value="3"
+                              type="radio"><label for="star3"></label>
+                            <input id="star2" name="value" value="2"
+                              type="radio"><label for="star2"></label>
+                            <input id="star1" name="value" value="1"
+                              type="radio"><label for="star1"></label>
+                          </div>
+                        </div>
+                        <button class="primary-btn">Submit</button>
+                      </form>
+                    </div>
+                  </div>
+                  <!-- /Review Form -->
+                </div>
+              </div>
+              <!-- /tab3  -->
+            </div>
+            <!-- /product tab content  -->
+          </div>
+        </div>
+        <!-- /product tab -->
+      </div>
+      <!-- /row -->
+    </div>
+    <!-- /container -->
+  </div>
+  <!-- /SECTION -->
+
+  <!-- FOOTER -->
+  <footer th:replace="~{front-store/fragments/parts :: footer}"></footer>
+  <!-- /FOOTER -->
+
+  <!-- jQuery Plugins -->
+  <th:block
+    th:replace="~{front-store/fragments/common-links :: jqueryPlugins}"></th:block>
+
+  <!-- Store Pagination -->
+  <script th:src="@{/electro-colorlib/js/store-pagination.js}"></script>
+
+</body>
+</html>

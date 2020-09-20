@@ -1,0 +1,12 @@
+{"properties": [
+  {
+    "name": "general.settings.delivery-fee-php",
+    "type": "java.lang.Double",
+    "description": "Application Settings Value for Delivery Fee (in PH Peso)[temporary]"
+  },
+  {
+    "name": "general.settings.sales-tax-rate",
+    "type": "java.lang.Double",
+    "description": "Application Settings Value for Sales Tax (in Philippines)[temporary]"
+  }
+]}

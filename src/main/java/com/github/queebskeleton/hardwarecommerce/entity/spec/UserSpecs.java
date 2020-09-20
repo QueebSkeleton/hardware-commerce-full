@@ -1,4 +1,4 @@
-package com.github.queebskeleton.hardwarecommerce.entity.specs;
+package com.github.queebskeleton.hardwarecommerce.entity.spec;
 
 import org.springframework.data.jpa.domain.Specification;
 
@@ -27,6 +27,15 @@ public class UserSpecs {
 	public static Specification<User> lastNameContainsIgnoreCase(String lastName) {
 		return (root, query, builder) -> {
 			return builder.like(builder.upper(root.get("lastName")), "%" + lastName.toUpperCase() + "%");
+		};
+	}
+	
+	public static Specification<User> nameContainsIgnoreCase(String name) {
+		return (root, query, builder) -> {
+			return builder.like(
+					builder.upper(builder.concat(
+							builder.concat(root.get("firstName"), " "),
+							root.get("lastName"))), "%" + name.toUpperCase() + "%");
 		};
 	}
 	

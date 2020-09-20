@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+<title>H-Commerce | Checkout</title>
+
+<!-- CSS Plugins -->
+<th:block
+  th:replace="~{front-store/fragments/common-links :: cssPlugins}"></th:block>
+
+</head>
+<body>
+  <!-- HEADER -->
+  <header th:replace="~{front-store/fragments/parts :: header}"></header>
+  <!-- /HEADER -->
+
+  <!-- NAVIGATION -->
+  <nav th:replace="~{front-store/fragments/parts :: navigation}"></nav>
+  <!-- /NAVIGATION -->
+
+  <!-- BREADCRUMB -->
+  <div id="breadcrumb" class="section">
+    <!-- container -->
+    <div class="container">
+      <!-- row -->
+      <div class="row">
+        <div class="col-md-12">
+          <ul class="breadcrumb-tree">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Not Yet Set</a></li>
+            <li><a href="#">Not Yet Set</a></li>
+            <li class="active">Not Yet Set</li>
+          </ul>
+        </div>
+      </div>
+      <!-- /row -->
+    </div>
+    <!-- /container -->
+  </div>
+  <!-- /BREADCRUMB -->
+
+  <!-- BREADCRUMB -->
+  <div id="breadcrumb" class="section">
+    <!-- container -->
+    <div class="container">
+      <!-- row -->
+      <div class="row">
+        <div class="col-md-12">
+          <h3 class="breadcrumb-header">Checkout</h3>
+          <ul class="breadcrumb-tree">
+            <li><a href="#">Home</a></li>
+            <li class="active">Checkout</li>
+          </ul>
+        </div>
+      </div>
+      <!-- /row -->
+    </div>
+    <!-- /container -->
+  </div>
+  <!-- /BREADCRUMB -->
+
+  <!-- SECTION -->
+  <div class="section">
+
+    <form method="POST" action="checkout">
+
+      <!-- container -->
+      <div class="container">
+        <!-- row -->
+        <div class="row">
+
+          <div class="col-md-7">
+            <!-- Billing Details -->
+            <div class="billing-details">
+              <div class="section-title">
+                <h3 class="title">Billing address</h3>
+              </div>
+              <div class="form-group">
+                <input class="input" type="text" name="firstName"
+                  placeholder="First Name">
+              </div>
+              <div class="form-group">
+                <input class="input" type="text" name="lastName"
+                  placeholder="Last Name">
+              </div>
+              <div class="form-group">
+                <input class="input" type="email" name="emailAddress"
+                  placeholder="Email">
+              </div>
+              <div class="form-group">
+                <input class="input" type="text" name="address"
+                  placeholder="Address">
+              </div>
+              <div class="form-group">
+                <input class="input" type="text" name="city"
+                  placeholder="City">
+              </div>
+              <div class="form-group">
+                <input class="input" type="text" name="country"
+                  placeholder="Country">
+              </div>
+              <div class="form-group">
+                <input class="input" type="text" name="zipCode"
+                  placeholder="ZIP Code">
+              </div>
+              <div class="form-group">
+                <input class="input" type="tel" name="contactNumber"
+                  placeholder="Telephone">
+              </div>
+              <div class="form-group">
+                <div class="input-checkbox">
+                  <input type="checkbox" id="create-account"> <label
+                    for="create-account"> <span></span> Create
+                    Account?
+                  </label>
+                  <div class="caption">
+                    <p>Lorem ipsum dolor sit amet, consectetur
+                      adipisicing elit, sed do eiusmod tempor
+                      incididunt.</p>
+                    <input class="input" type="text" name="username"
+                      placeholder="Enter Your Username">
+                    <input class="input" type="password" name="password"
+                      placeholder="Enter Your Password">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- /Billing Details -->
+
+            <!-- Shiping Details -->
+            <div class="shiping-details">
+              <div class="section-title">
+                <h3 class="title">Shiping address</h3>
+              </div>
+              <div class="input-checkbox">
+                <input type="checkbox" id="shiping-address"> <label
+                  for="shiping-address"> <span></span> Ship to a
+                  diffrent address?
+                </label>
+                <div class="caption">
+                  <div class="form-group">
+                    <input class="input" type="text" name="first-name"
+                      placeholder="First Name">
+                  </div>
+                  <div class="form-group">
+                    <input class="input" type="text" name="last-name"
+                      placeholder="Last Name">
+                  </div>
+                  <div class="form-group">
+                    <input class="input" type="email" name="email"
+                      placeholder="Email">
+                  </div>
+                  <div class="form-group">
+                    <input class="input" type="text" name="address"
+                      placeholder="Address">
+                  </div>
+                  <div class="form-group">
+                    <input class="input" type="text" name="city"
+                      placeholder="City">
+                  </div>
+                  <div class="form-group">
+                    <input class="input" type="text" name="country"
+                      placeholder="Country">
+                  </div>
+                  <div class="form-group">
+                    <input class="input" type="text" name="zip-code"
+                      placeholder="ZIP Code">
+                  </div>
+                  <div class="form-group">
+                    <input class="input" type="tel" name="tel"
+                      placeholder="Telephone">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- /Shiping Details -->
+
+            <!-- Order notes -->
+            <div class="order-notes">
+              <textarea class="input" placeholder="Order Notes"></textarea>
+            </div>
+            <!-- /Order notes -->
+          </div>
+
+          <!-- Order Details -->
+          <div class="col-md-5 order-details">
+            <div class="section-title text-center">
+              <h3 class="title">Your Order</h3>
+            </div>
+            <div class="order-summary">
+              <div class="order-col">
+                <div>
+                  <strong>PRODUCT</strong>
+                </div>
+                <div>
+                  <strong>TOTAL</strong>
+                </div>
+              </div>
+              <div class="order-products">
+                <div th:each="item : ${@shoppingCart.items}"
+                  th:object="${item}" class="order-col">
+                  <div>
+                    <span th:text="*{quantity} + 'x'">1x</span> <span
+                      th:text="*{productName}">Product Name Goes
+                      Here</span>
+                  </div>
+                  <div
+                    th:text="'Php' + ${#numbers.formatDecimal(item.getSubtotal(), 1, 2)}">Php980.00</div>
+                </div>
+              </div>
+              <div class="order-col">
+                <div>Shiping</div>
+                <div>
+                  <strong>FREE (Not Supported Yet)</strong>
+                </div>
+              </div>
+              <div class="order-col">
+                <div>
+                  <strong>TOTAL</strong>
+                </div>
+                <div>
+                  <strong class="order-total"
+                    th:text="'Php' + ${#numbers.formatDecimal(@shoppingCart.getSubtotal(), 1, 2)}">Php0.00</strong>
+                </div>
+              </div>
+            </div>
+            <div class="payment-method">
+              <div class="input-radio">
+                <input type="radio" name="payment" id="payment-1">
+                <label for="payment-1"> <span></span> Direct
+                  Bank Transfer
+                </label>
+                <div class="caption">
+                  <p>Lorem ipsum dolor sit amet, consectetur
+                    adipisicing elit, sed do eiusmod tempor incididunt
+                    ut labore et dolore magna aliqua.</p>
+                </div>
+              </div>
+              <div class="input-radio">
+                <input type="radio" name="payment" id="payment-2">
+                <label for="payment-2"> <span></span> Cheque
+                  Payment
+                </label>
+                <div class="caption">
+                  <p>Lorem ipsum dolor sit amet, consectetur
+                    adipisicing elit, sed do eiusmod tempor incididunt
+                    ut labore et dolore magna aliqua.</p>
+                </div>
+              </div>
+              <div class="input-radio">
+                <input type="radio" name="payment" id="payment-3">
+                <label for="payment-3"> <span></span> Paypal
+                  System
+                </label>
+                <div class="caption">
+                  <p>Lorem ipsum dolor sit amet, consectetur
+                    adipisicing elit, sed do eiusmod tempor incididunt
+                    ut labore et dolore magna aliqua.</p>
+                </div>
+              </div>
+            </div>
+            <div class="input-checkbox">
+              <input type="checkbox" id="terms"> <label
+                for="terms"> <span></span> I've read and accept
+                the <a href="#">terms &amp; conditions</a>
+              </label>
+            </div>
+            <button type="submit" class="primary-btn order-submit">Place order</button>
+          </div>
+          <!-- /Order Details -->
+        </div>
+        <!-- /row -->
+      </div>
+      <!-- /container -->
+
+    </form>
+
+  </div>
+  <!-- /SECTION -->
+
+  <!-- NEWSLETTER -->
+  <div th:replace="~{front-store/fragments/parts :: newsletter}"></div>
+  <!-- /NEWSLETTER -->
+
+  <!-- FOOTER -->
+  <footer th:replace="~{front-store/fragments/parts :: footer}"></footer>
+  <!-- /FOOTER -->
+
+  <!-- jQuery Plugins -->
+  <th:block
+    th:replace="~{front-store/fragments/common-links :: jqueryPlugins}"></th:block>
+
+  <!-- Store Pagination -->
+  <script th:src="@{/electro-colorlib/js/store-pagination.js}"></script>
+
+</body>
+</html>

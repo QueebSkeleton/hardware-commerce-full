@@ -1,0 +1,23 @@
+<th:block xmlns:th="https://thymeleaf.org">
+  
+  <th:block th:fragment="status(name)">
+    <th:block th:switch="${name}">
+      <span th:case="'PENDING'" class="badge bg-warning">
+        Pending
+      </span>
+      <span th:case="'PROCESSING'" class="badge bg-success">
+        Processing
+      </span>
+      <span th:case="'DELIVERED'" class="badge bg-primary">
+        Complete
+      </span>
+      <span th:case="'DENIED'" class="badge bg-danger">
+        Denied
+      </span>
+      <span th:case="'CANCELLED'" class="badge bg-muted">
+        Cancelled
+      </span>
+    </th:block>
+  </th:block>
+  
+</th:block>

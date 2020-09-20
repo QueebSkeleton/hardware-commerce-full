@@ -1,20 +1,25 @@
 package com.github.queebskeleton.hardwarecommerce.service.impl;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraphUtils;
 import com.github.queebskeleton.hardwarecommerce.dto.AdminProductAddForm;
 import com.github.queebskeleton.hardwarecommerce.dto.EntityImage;
 import com.github.queebskeleton.hardwarecommerce.dto.FrontStorePagination;
+import com.github.queebskeleton.hardwarecommerce.dto.FrontStoreProductDisplay;
 import com.github.queebskeleton.hardwarecommerce.entity.Product;
 import com.github.queebskeleton.hardwarecommerce.entity.ProductImage;
 import com.github.queebskeleton.hardwarecommerce.entity.spec.ProductSpecs;
@@ -29,6 +34,9 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class ProductServiceImpl implements ProductService {
 	
+	@Value("${general.settings.sales-tax-rate}")
+	private double salesTaxRate;
+	
 	private final ProductJpaRepository productJpaRepository;
 	private final ProductImageJpaRepository productImageJpaRepository;
 	
@@ -38,12 +46,14 @@ public class ProductServiceImpl implements ProductService {
 	public Page<Product> getProductPage(Pageable pageable, String search) {
 		
 		Page<Product> productPage = (search == null) ?
-				productJpaRepository.findAll(pageable) :
+				productJpaRepository.findAll(pageable, EntityGraphUtils.fromAttributePaths("category", "vendor")) :
 					productJpaRepository.findAll(
 							Specification.where(ProductSpecs.nameContainsIgnoreCase(search))
 							.or(ProductSpecs.categoryNameContainsIgnoreCase(search))
 							.or(ProductSpecs.unitsInStockContains(search))
-							.or(ProductSpecs.unitPriceContains(search)), pageable);
+							.or(ProductSpecs.unitPriceContains(search)),
+							pageable,
+							EntityGraphUtils.fromAttributePaths("category", "vendor"));
 				
 		productPage.getContent().forEach(product -> product.setImages(new ArrayList<>()));
 		
@@ -72,6 +82,71 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
+	public List<Product> getTopSellingProducts() {
+		// TODO: Find cleaner Java8 Stream approach to initializing images of products
+		// using 1+1 query
+		List<Product> productList =
+				productJpaRepository.findTopSaledProducts(
+						PageRequest.of(0, 5));
+		
+		productList.forEach(product -> product.setImages(new ArrayList<>()));
+		
+		Map<Long, Product> productsMap =
+				productList.parallelStream()
+						.collect(
+							Collectors.toMap(
+									product -> product.getId(),
+									product -> product));
+		
+		productImageJpaRepository
+				.findByProduct_IdInFetchProduct(
+						productList.parallelStream()
+							.mapToLong(product -> product.getId())
+							.boxed()
+							.collect(Collectors.toList()))
+				.forEach(productImage ->
+						productsMap.get(productImage.getProduct().getId())
+								.getImages()
+								.add(productImage));
+		
+		return productList;
+	}
+
+	@Override
+	public List<Product> getNewProducts() {
+		// TODO: Find cleaner Java8 Stream approach to initializing images of products
+		// using 1+1 query
+		
+		// Get products added ONE MONTH AGO, LIMIT 10
+		Page<Product> productPage =
+				productJpaRepository.findAll(
+						ProductSpecs.addedOnGreaterThan(LocalDateTime.now().minusMonths(1)),
+						PageRequest.of(0, 10));
+		
+		productPage.get().forEach(product -> product.setImages(new ArrayList<>()));
+		
+		Map<Long, Product> productsMap =
+				productPage.get()
+						.collect(
+							Collectors.toMap(
+									product -> product.getId(),
+									product -> product));
+		
+		productImageJpaRepository
+				.findByProduct_IdInFetchProduct(
+						productPage.get()
+							.mapToLong(product -> product.getId())
+							.boxed()
+							.collect(Collectors.toList()))
+				.forEach(productImage ->
+						productsMap.get(productImage.getProduct().getId())
+								.getImages()
+								.add(productImage));
+		
+		return productPage.getContent();
+	}
+
+	@Override
 	@Transactional
 	public void addProduct(AdminProductAddForm addForm) {
 		
@@ -82,10 +157,12 @@ public class ProductServiceImpl implements ProductService {
 				addForm.getVendor(),
 				addForm.getName(),
 				addForm.getDescription(),
+				LocalDateTime.now(),
 				addForm.getBarcode(),
 				addForm.getStockKeepingUnit(),
 				addForm.getInitialStock(),
 				addForm.getUnitPrice(),
+				addForm.isTaxable(),
 				null);
 		
 		// If images exist, save product, 
@@ -176,6 +253,29 @@ public class ProductServiceImpl implements ProductService {
 								.add(productImage));
 		
 		return productPage;
+	}
+
+	@Override
+	public FrontStoreProductDisplay getProductDisplayByProductId(Long productId) {
+		Product product =
+				productJpaRepository.findById(productId,
+						EntityGraphUtils.fromAttributePaths("category", "vendor", "images"))
+					.orElseThrow(() -> new IllegalArgumentException("Invalid Product ID."));
+		
+		return new FrontStoreProductDisplay(
+				product.getId(),
+				product.getCategory().getName(),
+				product.getVendor().getName(),
+				product.getName(),
+				product.getDescription(),
+				product.isTaxable() ?
+					product.getUnitPrice() + (product.getUnitPrice() * salesTaxRate) :
+						product.getUnitPrice(),
+				product.getUnitsInStock() > 0,
+				product.getImages()
+					   .parallelStream()
+					   .map(image -> image.getFileName().toString())
+					   .collect(Collectors.toList()));
 	}
 
 }
