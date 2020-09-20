@@ -114,8 +114,36 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public List<Product> getNewProducts() {
-		// TODO Auto-generated method stub
-		return null;
+		// TODO: Find cleaner Java8 Stream approach to initializing images of products
+		// using 1+1 query
+		
+		// Get products added ONE MONTH AGO, LIMIT 10
+		Page<Product> productPage =
+				productJpaRepository.findAll(
+						ProductSpecs.addedOnGreaterThan(LocalDateTime.now().minusMonths(1)),
+						PageRequest.of(0, 10));
+		
+		productPage.get().forEach(product -> product.setImages(new ArrayList<>()));
+		
+		Map<Long, Product> productsMap =
+				productPage.get()
+						.collect(
+							Collectors.toMap(
+									product -> product.getId(),
+									product -> product));
+		
+		productImageJpaRepository
+				.findByProduct_IdInFetchProduct(
+						productPage.get()
+							.mapToLong(product -> product.getId())
+							.boxed()
+							.collect(Collectors.toList()))
+				.forEach(productImage ->
+						productsMap.get(productImage.getProduct().getId())
+								.getImages()
+								.add(productImage));
+		
+		return productPage.getContent();
 	}
 
 	@Override
