@@ -59,7 +59,10 @@
           <i class="fas fa-user-tie fa-2x text-white"></i>
         </div>
         <div class="info">
-          <a href="#" class="d-block">Administrator Name</a>
+          <a href="#" class="d-block"
+            th:text="${@userSessionFacade.getUser().getFirstName()
+              + ' '
+              + @userSessionFacade.getUser().getLastName()}">Administrator Name</a>
         </div>
       </div>
 
