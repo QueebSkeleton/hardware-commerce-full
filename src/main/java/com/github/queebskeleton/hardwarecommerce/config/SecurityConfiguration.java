@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import lombok.RequiredArgsConstructor;
 
@@ -16,6 +17,8 @@ import lombok.RequiredArgsConstructor;
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsService userDetailsService;
+
+    private final AuthenticationSuccessHandler authenticationSuccessHandler;
 
     @Override
     public void configure(AuthenticationManagerBuilder authBuilder) throws Exception {
@@ -36,6 +39,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .loginProcessingUrl("/processLogin")
                 .usernameParameter("username")
                 .passwordParameter("password")
+                .successHandler(authenticationSuccessHandler)
+            
+            .and().logout()
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/")
                 
             .and().headers().frameOptions().disable();
     }
