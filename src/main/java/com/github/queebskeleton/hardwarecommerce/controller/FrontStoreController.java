@@ -74,7 +74,7 @@ public class FrontStoreController {
 				.collect(Collectors.toMap(value -> value, value -> Long.valueOf(0)));
 		ratingSummaryMap.putAll(ratingList.parallelStream()
 				.collect(Collectors.groupingBy(rating -> rating.getValue(), Collectors.counting())));
-
+		
 		model.addAttribute("ratingList", ratingList);
 		model.addAttribute("ratingSummaryMap", ratingSummaryMap);
 		model.addAttribute("totalRatingCount", ratingList.size());

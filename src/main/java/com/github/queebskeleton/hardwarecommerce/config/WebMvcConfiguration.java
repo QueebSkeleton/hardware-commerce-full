@@ -9,9 +9,9 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
 	
 	@Override
 	public void addViewControllers(ViewControllerRegistry registry) {
-		
-		// Administrator - Login Page
-		registry.addViewController("/admin/login").setViewName("admin/pages/login");
+
+		// Login Page
+		registry.addViewController("/login").setViewName("login");
 		
 		// Administrator - Dashboard Page
 		registry.addViewController("/admin/dashboard").setViewName("admin/pages/dashboard");
