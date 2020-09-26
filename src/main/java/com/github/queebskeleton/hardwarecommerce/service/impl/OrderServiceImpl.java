@@ -175,6 +175,46 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
+	public void placeOrder(Long userId, ShoppingCart shoppingCart) {
+		Map<Long, Product> products = 
+			productJpaRepository.findAllById(
+				shoppingCart.getItems()
+					.parallelStream()
+					.mapToLong(item -> item.getProductId())
+					.boxed()
+					.collect(Collectors.toList()))
+				.parallelStream()
+				.collect(
+						Collectors.toMap(
+								product -> product.getId(),
+								product -> product));
+
+		Order order = new Order();
+		order.setPlacedBy(
+			userJpaRepository.findById(userId)
+				.orElseThrow(() -> new IllegalArgumentException("Invalid user id")));
+		order.setPlacedOn(LocalDateTime.now());
+		order.setStatus(Order.Status.PENDING);
+		order.setOrderItems(
+			shoppingCart.getItems()
+				.parallelStream()
+				.map(item ->  {
+					Product product = products.get(item.getProductId());
+					return new OrderItem(
+						null,
+						order,
+						product,
+						product.isTaxable(),
+						product.getUnitPrice(),
+						item.getQuantity()); })
+				.collect(Collectors.toList()));
+		order.setSalesTaxRate(salesTaxRate);
+
+		orderJpaRepository.save(order);
+		orderItemJpaRepository.saveAll(order.getOrderItems());
+	}
+
+	@Override
 	public void deleteOrderById(Long id) {
 		orderJpaRepository.deleteById(id);
 	}

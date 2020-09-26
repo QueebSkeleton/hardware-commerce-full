@@ -15,6 +15,7 @@ public interface OrderService {
 	OrderInvoice getOrderInvoiceByOrderId(Long id);
 	void addOrder(AdminCustomOrderForm orderForm);
 	void placeOrder(BillingAddress billingAddress, ShoppingCart shoppingCart);
+	void placeOrder(Long userId, ShoppingCart shoppingCart);
 	void deleteOrderById(Long id);
 
 }

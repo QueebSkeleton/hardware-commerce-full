@@ -4,6 +4,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraph;
 import com.cosium.spring.data.jpa.entity.graph.repository.EntityGraphJpaRepository;
 import com.cosium.spring.data.jpa.entity.graph.repository.EntityGraphJpaSpecificationExecutor;
 import com.github.queebskeleton.hardwarecommerce.entity.User;
@@ -12,5 +13,6 @@ import com.github.queebskeleton.hardwarecommerce.entity.User;
 public interface UserJpaRepository extends EntityGraphJpaRepository<User, Long>, EntityGraphJpaSpecificationExecutor<User> {
     
     Optional<User> findByUsername(String username);
+    Optional<User> findByUsername(String username, EntityGraph entityGraph);
     
 }

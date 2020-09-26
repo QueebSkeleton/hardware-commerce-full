@@ -20,6 +20,10 @@ public class UserSessionFacade {
 
     private User user;
 
+    public boolean isLoggedIn() {
+        return SecurityContextHolder.getContext().getAuthentication() != null;
+    }
+
     public User getUser() {
         if(user == null)
             user = userJpaRepository.findByUsername(

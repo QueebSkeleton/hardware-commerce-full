@@ -1,22 +1,28 @@
 package com.github.queebskeleton.hardwarecommerce.controller;
 
+import java.security.Principal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraphUtils;
 import com.github.queebskeleton.hardwarecommerce.dto.BillingAddress;
 import com.github.queebskeleton.hardwarecommerce.dto.FrontStorePagination;
 import com.github.queebskeleton.hardwarecommerce.dto.FrontStoreRatingForm;
 import com.github.queebskeleton.hardwarecommerce.entity.Rating;
 import com.github.queebskeleton.hardwarecommerce.model.ShoppingCart;
+import com.github.queebskeleton.hardwarecommerce.model.UserSessionFacade;
+import com.github.queebskeleton.hardwarecommerce.repository.UserJpaRepository;
 import com.github.queebskeleton.hardwarecommerce.service.CategoryService;
 import com.github.queebskeleton.hardwarecommerce.service.OrderService;
 import com.github.queebskeleton.hardwarecommerce.service.ProductService;
@@ -30,6 +36,10 @@ import lombok.RequiredArgsConstructor;
 public class FrontStoreController {
 
 	private final ShoppingCart shoppingCart;
+
+	private final UserSessionFacade userSessionFacade;
+
+	private final UserJpaRepository userJpaRepository;
 
 	private final CategoryService categoryService;
 	private final VendorService vendorService;
@@ -90,8 +100,25 @@ public class FrontStoreController {
 	}
 
 	@GetMapping("/checkout")
-	public String checkoutPage() {
-		return "front-store/pages/checkout";
+	public String checkoutPage(Model model, Principal principal) {
+		if(principal != null) {
+			model.addAttribute(
+				"user",
+				userJpaRepository.findByUsername(
+					((UserDetails) principal).getUsername(),
+					EntityGraphUtils.fromAttributePaths("address"))
+				.orElseThrow(() -> new IllegalArgumentException("Invalid username.")));
+			return "front-store/pages/checkout-with-user";
+		}
+
+		return "front-store/pages/checkout-no-user";
+	}
+
+	@PostMapping("/checkout-logged-in")
+	public String checkoutLoggedIn(Long userId) {
+		orderService.placeOrder(userId, shoppingCart);
+
+		return "redirect:/";
 	}
 
 	@PostMapping("/checkout")
