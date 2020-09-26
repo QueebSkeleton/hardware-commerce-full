@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,7 +20,6 @@ import com.github.queebskeleton.hardwarecommerce.dto.FrontStorePagination;
 import com.github.queebskeleton.hardwarecommerce.dto.FrontStoreRatingForm;
 import com.github.queebskeleton.hardwarecommerce.entity.Rating;
 import com.github.queebskeleton.hardwarecommerce.model.ShoppingCart;
-import com.github.queebskeleton.hardwarecommerce.model.UserSessionFacade;
 import com.github.queebskeleton.hardwarecommerce.repository.UserJpaRepository;
 import com.github.queebskeleton.hardwarecommerce.service.CategoryService;
 import com.github.queebskeleton.hardwarecommerce.service.OrderService;
@@ -36,8 +34,6 @@ import lombok.RequiredArgsConstructor;
 public class FrontStoreController {
 
 	private final ShoppingCart shoppingCart;
-
-	private final UserSessionFacade userSessionFacade;
 
 	private final UserJpaRepository userJpaRepository;
 
